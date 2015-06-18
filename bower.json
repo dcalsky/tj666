@@ -1,0 +1,20 @@
+{
+  "name": "tj666",
+  "version": "0.0.0",
+  "authors": [
+    "dcalsky"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "app/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
