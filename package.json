@@ -10,6 +10,16 @@
     "react-router": "~0.13.2",
     "reflux": "~0.2.7"
   },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "es6": true
+        }
+      ]
+    ]
+  },
   "devDependencies": {
     "browserify": "~9.0.7",
     "del": "~1.1.1",

@@ -5,7 +5,6 @@ var RouteHandler = Router.RouteHandler;
 var Layout = React.createClass({
 
   render: function() {
-
     return (
       <div className="App">
         <RouteHandler />
