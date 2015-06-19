@@ -17,8 +17,12 @@ gulp.task('clean:dev', function() {
 gulp.task('clean:dist', function() {
   return del(['dist']);
 });
-gulp.task('php',function(){
-    return gulp.src('app/php/*')
+gulp.task('php:dev',function(){
+    return gulp.src('app/scripts/php/*')
+    .pipe(gulp.dest('.tmp/php'));
+});
+gulp.task('php:dist',function(){
+    return gulp.src('app/scripts/php/*')
     .pipe(gulp.dest('dist/php'));
 });
 gulp.task('scripts', function() {
@@ -114,14 +118,14 @@ gulp.task('bundle', function () {
 gulp.task('webserver', function() {
   return gulp.src(['.tmp', 'app'])
     .pipe($.webserver({
-      host: '0.0.0.0', //change to 'localhost' to disable outside connections
+      host: 'localhost', //change to 'localhost' to disable outside connections
       livereload: true,
       open: true
     }));
 });
 
 gulp.task('serve', function() {
-  runSequence('clean:dev', ['scripts', 'compass','php'], 'webserver');
+  runSequence('clean:dev', ['scripts', 'compass','php:dev'], 'webserver');
 
   gulp.watch('app/*.html');
 
@@ -139,9 +143,8 @@ gulp.task('serve', function() {
 
 gulp.task('build', function() {
   env = 'prod';
-
   runSequence(['clean:dev', 'clean:dist'],
-              ['scripts', 'compass','php','imagemin'],
+              ['scripts', 'compass','php:dist','imagemin'],
               'bundle', 'copy');
 });
 

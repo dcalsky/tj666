@@ -18,10 +18,12 @@ var Input = React.createClass({
   getValue: function () {
     return React.findDOMNode(this).value
   },
-
+  checkAccout:function(){
+    if(this.props.onBlur)
+    this.props.onBlur(this.state.value);
+  },
   render: function () {
     var className = this.getClasses()
-
     var type = this.props.type === 'password' ? 'password' : 'text'
 
     return (
@@ -30,7 +32,9 @@ var Input = React.createClass({
         type={type}
         className={className} 
         onChange={this.handleChange} 
-        value={this.state.value} />
+        value={this.state.value} 
+        onBlur={this.checkAccout}
+        />
     )
   }
 })

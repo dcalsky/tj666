@@ -114,6 +114,9 @@ var Form = React.createClass({
       return
     }
     var data = this.getValue()
+      //this.setState({ locked: false });
+      console.log(this.props.handleLogin);
+      //console.log(this.props.login.handleLogin(data,this.props.login.isLogin));
   },
 
   render: function () {

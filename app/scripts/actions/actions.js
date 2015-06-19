@@ -1,8 +1,8 @@
 var Reflux = require('reflux');
 
 var Actions = Reflux.createActions([
-  'login',
-  'register',
+  'handleLogin',
+  'checkAccout',
   'getDepartment',
 ]);
 

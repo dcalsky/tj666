@@ -144,7 +144,7 @@ var Control = React.createClass({
         control = <ColorPicker {...this.copyProps()} />
       break
       default:
-        control = <Input className="form-control" {...this.copyProps()} />
+        control = <Input className="form-control" {...this.copyProps()} onBlur={this.props.onBlur} />
       break
     }
 

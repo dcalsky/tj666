@@ -1,30 +1,56 @@
 var Reflux = require('reflux');
 var Actions = require('../actions/actions.js');
-var request = require('../src/js/utils/request.js');
-var URL = 'http://www.ttjj666.com/php/milk.php?action=milkclass';
-function _connectDatabase(URL,data){
-
-};
+var reqwest = require('reqwest');
+var URL = '../php/Login.php';
 var LoginStore = Reflux.createStore({
     listenables: [Actions],
-    data:{},
+    objLogin:{
+        handleLogin:function(data,isLogin){
+            this.handleLogin(data,isLogin);
+        },
+        isLogin:true,
+    },
+    getInitialState:function(){
+        return {
+            objLogin:this.objLogin,
+        }
+    },
     init: function() {
-        
     },
-    login: function(data,isLogin) {
-        this.data = data;
-        this.data.isLogin = true;
-        console.log(this.data);
-        this.trigger(this.data);
+    handleLogin:function(data,isLogin){
+        console.log(data + '--' + isLogin);
     },
-    register:function(data){
-        this.data = data;
-        this.data.isLogin = false;
-        this.trigger(this.data);
-    },
-    confirmAccout:function(accout){
-
-    },
+    checkAccout:function(accout){
+        this.objLogin.isLogin = false;
+        reqwest({
+            url: URL
+          , method: 'get'
+          , data: {action:'checkAccout',accout:accout}
+          , type: 'json'
+          , success: function (resp) {
+              console.log(resp.status);
+            }
+        });
+        /*
+        request.post(URL, {
+          data: {action:'checkAccout',accout:accout},
+          type: 'form',
+          success: function (res) {
+            console.log(res);
+            if (res.status == true) {
+              if (res.msg)
+                console.log(res.msg);
+            } else {
+              console.log('失败的连接');
+            }
+          },
+          failure: function () {
+            console.log('失败的连接')
+          }.bind(this)
+        });
+        */
+        this.trigger(this.objLogin);
+    }
 });
 
 module.exports = LoginStore;

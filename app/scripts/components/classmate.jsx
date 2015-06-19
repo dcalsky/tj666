@@ -9,10 +9,10 @@ var Link = Router.Link;
 var Navbar = require('./Navbar.jsx');
 
 var Classmate = React.createClass({
-	mixins:[Reflux.connect(FindclassStore, 'store')],
+	mixins:[Reflux.connect(FindclassStore, 'FindclassStore')],
 
 	render:function(){
-		console.log(this.state.store.department);
+		console.log(this.state.FindclassStore.department);
 		return(
 			<div >
               <Navbar />
@@ -24,7 +24,7 @@ var Classmate = React.createClass({
 				<Row>
 				<Col xs={12}>
 				    <Input type='select' label='请选择要查询的专业:' placeholder='select'>
-				      	{this.state.store.department.map(function(name){
+				      	{this.state.FindclassStore.department.map(function(name){
 				      		return (<option value={name}>{name}</option>)
 				      	})}
 				    </Input>
