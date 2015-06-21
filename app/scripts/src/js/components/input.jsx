@@ -23,9 +23,8 @@ var Input = React.createClass({
     this.props.onBlur(this.state.value);
   },
   render: function () {
-    var className = this.getClasses()
-    var type = this.props.type === 'password' ? 'password' : 'text'
-
+    var className = this.getClasses();
+    var type = this.props.type === 'password' ? 'password' : 'text';
     return (
       <input readOnly={this.props.readOnly} 
         placeholder={this.props.placeholder}

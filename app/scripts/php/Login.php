@@ -40,12 +40,12 @@ if (!$con)
   		$accout = $_REQUEST['accout'];
   		$password = $_REQUEST['password'];
 		$sql="INSERT INTO User_Base VALUES ('$accout', '$password', '', '') ";
-		if( $return = mysql_query($sql)){
+		if( mysql_query($sql)){
 				$status = true;
 		}else{
 				$status = false;
 		}
-				mysql_free_result($return);
+				
 			print(json_encode(array('status' => $status)));
   	}
   }

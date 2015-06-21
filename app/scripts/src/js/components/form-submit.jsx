@@ -1,5 +1,6 @@
-var React = require('react')
-var classnames = require('classnames')
+var React = require('react');
+var classnames = require('classnames');
+
 
 var Submit = React.createClass({
 
@@ -11,7 +12,7 @@ var Submit = React.createClass({
 
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.locked !== this.props.locked) {
-      this.setState({ disabled:nextProps.locked })
+      this.setState({ disabled:nextProps.locked });
     }
   },
 
@@ -22,7 +23,7 @@ var Submit = React.createClass({
       text = text[i]
     }
 
-    var button = <button  disabled={this.state.disabled} className="btn btn-primary" type="submit">{text}</button>
+    var button = <button  disabled={this.state.disabled} className="btn btn-primary"  type="submit" >{text}</button>
     
     if ('horizontal' === this.props.layout) {
       var labelWidth = this.props.labelWidth || 2,
@@ -31,7 +32,7 @@ var Submit = React.createClass({
 
       button = 
         <div className="form-group">
-          <div className={className}>
+          <div className={className} >
             {button}
           </div>
         </div>

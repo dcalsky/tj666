@@ -1,9 +1,12 @@
 var Reflux = require('reflux');
 
 var Actions = Reflux.createActions([
-  'handleLogin',
+  'quit',
+  'login',
+  'register',
   'checkAccout',
   'getDepartment',
+  'setUserMessage',
 ]);
 
 module.exports = Actions;

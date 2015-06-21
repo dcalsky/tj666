@@ -17,10 +17,6 @@ gulp.task('clean:dev', function() {
 gulp.task('clean:dist', function() {
   return del(['dist']);
 });
-gulp.task('php:dev',function(){
-    return gulp.src('app/scripts/php/*')
-    .pipe(gulp.dest('.tmp/php'));
-});
 gulp.task('php:dist',function(){
     return gulp.src('app/scripts/php/*')
     .pipe(gulp.dest('dist/php'));
@@ -125,7 +121,7 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('serve', function() {
-  runSequence('clean:dev', ['scripts', 'compass','php:dev'], 'webserver');
+  runSequence('clean:dev', ['scripts', 'compass'], 'webserver');
 
   gulp.watch('app/*.html');
 

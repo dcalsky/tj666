@@ -66,7 +66,7 @@ var Control = React.createClass({
   },
 
   getValue: function (raw) {
-    return this.refs.control.getValue(raw)
+      return this.refs.control.getValue(raw);
   },
 
   setValue: function (value) {
@@ -104,7 +104,7 @@ var Control = React.createClass({
     return <p className={className}>{text}</p>
   },
 
-  getControl: function () {
+  getControl: function (value) {
     var control
     switch (this.props.type) {
       case 'checkbox':
@@ -144,7 +144,7 @@ var Control = React.createClass({
         control = <ColorPicker {...this.copyProps()} />
       break
       default:
-        control = <Input className="form-control" {...this.copyProps()} onBlur={this.props.onBlur} />
+        control = <Input className="form-control" {...this.copyProps(value)} onBlur={this.props.onBlur} hidden={this.props.hidden} />
       break
     }
 
@@ -155,7 +155,7 @@ var Control = React.createClass({
     return control
   },
 
-  copyProps: function () {
+  copyProps: function (value) {
     var keys = [
       'checked',
       'checkAble',
@@ -186,7 +186,7 @@ var Control = React.createClass({
 
     var props = { 
       ref: "control",
-      value: this.state.value,
+      value: value || this.state.value,
       onChange: this.handleChange,
     }
 
@@ -204,9 +204,9 @@ var Control = React.createClass({
         "has-error": this.state.hasError
       }
     )
-
+    var display = this.props.hidden ? 'none' : '';
     return (
-      <div className={className}>
+      <div className={className} style={{'display':display}} >
         {this.getLabel()}
         {this.getControl()}
         {this.getHint()}

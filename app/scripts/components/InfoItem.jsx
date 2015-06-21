@@ -4,6 +4,7 @@ var Button = Bs.Button ;
 var Router = require('react-router');
 var Route = Router.Route;
 var Link = Router.Link;
+var LoginStore = require('../stores/LoginStore.js');
 
 var InfoItem = React.createClass({
 	render:function(){

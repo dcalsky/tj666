@@ -47,7 +47,7 @@ module.exports = {
       minlen: '最小长度 {0}',
       minlens: '最少选择 {0}个选项',
       number: '数字',
-      password: '大写英文字符,小写英文字符,数字,特殊字符',
+      password: '整数',
     },
     tips: {
       alpha: '只能包含英文字符，"-"，"_"',

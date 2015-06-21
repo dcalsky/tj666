@@ -1,56 +1,90 @@
 var Reflux = require('reflux');
 var Actions = require('../actions/actions.js');
+var UserStore = require('./UserStore.js');
 var reqwest = require('reqwest');
+var URL_CROSS = 'http://www.ttjj666.com/php/Login.php';
 var URL = '../php/Login.php';
+
 var LoginStore = Reflux.createStore({
+    mixins:[Reflux.connect(UserStore,'UserStore')],
     listenables: [Actions],
     objLogin:{
-        handleLogin:function(data,isLogin){
-            this.handleLogin(data,isLogin);
-        },
+        hadLogin:false,
         isLogin:true,
+        status:'',
     },
     getInitialState:function(){
         return {
-            objLogin:this.objLogin,
-        }
+          objLogin:this.objLogin
+        };
     },
     init: function() {
     },
-    handleLogin:function(data,isLogin){
-        console.log(data + '--' + isLogin);
-    },
     checkAccout:function(accout){
-        this.objLogin.isLogin = false;
+        var self = this;
         reqwest({
-            url: URL
-          , method: 'get'
-          , data: {action:'checkAccout',accout:accout}
+            url: URL_CROSS
           , type: 'json'
+          , method: 'get'
+          , data:{action:'checkAccout',accout:accout}
           , success: function (resp) {
-              console.log(resp.status);
+               self.objLogin.isLogin = resp.status;
+               self.trigger({'objLogin':self.objLogin});
             }
         });
-        /*
-        request.post(URL, {
-          data: {action:'checkAccout',accout:accout},
-          type: 'form',
-          success: function (res) {
-            console.log(res);
-            if (res.status == true) {
-              if (res.msg)
-                console.log(res.msg);
-            } else {
-              console.log('失败的连接');
-            }
+    },
+    login:function(data){
+      this.objLogin.status = '';
+      this.trigger({'objLogin':this.objLogin});
+      var self = this;
+        reqwest({
+            url: URL_CROSS
+          , type: 'json'
+          , method: 'post'
+          , data:{action:'login',accout:data.accout,password:data.password}
+          , success: function (resp) {
+               self.objLogin.hadLogin = resp.status;
+               self.objLogin.status = self.objLogin.hadLogin ? 'success' : 'error';
+               if(self.objLogin.status == 'success'){
+                  var userMessage={accout:data.accout,password:data.password,QQ:resp.QQ,department:resp.department};
+                  Actions.setUserMessage(userMessage);
+               }
+               self.trigger({'objLogin':self.objLogin});
+               window.location.href = '#';
+          }
+          , error: function(err){
+               self.objLogin.hadLogin = resp.status;
+               self.objLogin.status = 'error';
+               self.trigger({'objLogin':self.objLogin});
           },
-          failure: function () {
-            console.log('失败的连接')
-          }.bind(this)
         });
-        */
-        this.trigger(this.objLogin);
-    }
+    },
+    register:function(data){
+      this.objLogin.status = '';
+      this.trigger({'objLogin':this.objLogin});
+      var self = this;
+        reqwest({
+            url: URL_CROSS
+          , type: 'json'
+          , method: 'post'
+          , data:{action:'register',accout:data.accout,password:data.password}
+          , success: function (resp) {
+               self.objLogin.hadLogin = resp.status;
+               self.objLogin.status = self.objLogin.hadLogin ? 'success' : 'error';
+               if(self.objLogin.status == 'success'){
+                  var userMessage={accout:data.accout,password:data.password,QQ:'',department:''};
+                  Actions.setUserMessage(userMessage);
+               }
+               self.trigger({'objLogin':self.objLogin});
+               window.location.href = '#';
+          }
+          , error: function(err){
+               self.objLogin.hadLogin = resp.status;
+               self.objLogin.status = 'error';
+               self.trigger({'objLogin':self.objLogin});
+          },
+        });
+    },
 });
 
 module.exports = LoginStore;

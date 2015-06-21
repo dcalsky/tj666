@@ -27,27 +27,10 @@ var Form = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    if (this.props.action !== this.props.action) {
-      this.fetchData(nextProps.action)
+    if(nextProps.status){
+      this.setState({ locked: false })
     }
   },
-
-  fetchData: function (src) {
-    src = src || this.props.action
-    loading.start()
-    request.getData(src, {
-      success: function (res) {
-        loading.end()
-        if (res.status === 1) {
-          this.setValue(res.data)
-        } else if (res.msg) {
-          message.error(res.msg)
-        }
-      }.bind(this),
-      failure: loading.end
-    })
-  },
-
   getValue: function () {
     var data = this.state.data
     Objects.forEach(this.refs, function (ref, k) {
@@ -75,12 +58,11 @@ var Form = React.createClass({
         props.ref = child.props.name
         props.value = this.state.data[child.props.name]
         if (child.props.equal)
-          props.onValidate = this.equalValidate(child.props.equal, child.props.name)
+          props.onValidate = this.equalValidate(child.props.equal, child.props.name);
       } else if (child.type === Submit) {
         props.locked = this.state.locked
       }
-
-      child = React.addons.cloneWithProps(child, props)
+      child = React.addons.cloneWithProps(child, props);
       return child
     }, this)
   },
@@ -93,8 +75,12 @@ var Form = React.createClass({
         console.log('equal target is not existed')
         return false
       }
-      var equal = self.refs[equalRef] 
-      return target.getValue() === equal.getValue()
+      var equal = self.refs[equalRef] ;
+      if(self.props.isLogin === true || target.getValue() === equal.getValue()){
+        return true;
+      }else{
+        return false;
+    }
     }
   },
 
@@ -105,20 +91,22 @@ var Form = React.createClass({
     event.preventDefault() 
     var success = true
     Objects.forEach(this.refs, function (child) {
-      var suc = child.validate()
-      success = success && suc
+      var suc = child.validate();
+      success = success && suc;
     })
 
     if (!success) {
       this.setState({ locked: false })
       return
     }
-    var data = this.getValue()
-      //this.setState({ locked: false });
-      console.log(this.props.handleLogin);
-      //console.log(this.props.login.handleLogin(data,this.props.login.isLogin));
+    var data = this.getValue();
+    console.log(this.props.handleLogin)
+    if(this.props.isLogin){
+       this.props.handleLogin.login(data);
+    }else{
+       this.props.handleLogin.register(data);
+    }
   },
-
   render: function () {
     return (
       <form onSubmit={this.handleSubmit} className="form-horizontal">{this.renderChildren()}</form>
