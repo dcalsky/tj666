@@ -93,7 +93,8 @@ var Select = React.createClass({
       }
     )
 
-    var text = this.state.text
+    var text = this.state.text;
+
     var items = this.state.data.map(function (item, i) {
       if (!text && item.value === this.state.value) text = item.text
       return (
@@ -101,7 +102,8 @@ var Select = React.createClass({
           <a href="javascript:;">{item.text}</a>
         </li>
       )
-    }, this)
+    }, this);
+    console.log(items);
 
     var placeholder = text ? "" : (this.state.data.length > 0 ? this.props.placeholder : this.state.msg)
 

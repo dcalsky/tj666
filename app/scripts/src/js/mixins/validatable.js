@@ -9,6 +9,7 @@ var multTypes = ['checkbox-group', 'mult-select']
 function getTip(key, value) {
   var text = Lang.get('validation.tips.' + key)
   if (text)
+
     text = Strings.format(text, value)
   return text
 }

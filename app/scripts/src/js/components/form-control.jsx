@@ -34,11 +34,21 @@ var Control = React.createClass({
       hintText: '',
       labelWidth: this.props.labelWidth || 2,
       width: 0,
+      labelCustomCol:'',
+      inputCustomCol:'',
+      groupCustomCol:'',
     }
   },
 
   componentWillMount: function () {
-    this.setWidth()
+    if(this.props.classCustom){
+      this.state.labelCustomCol = this.props.classCustom.labelCustomCol;
+      this.state.groupCustomCol = this.props.classCustom.groupCustomCol;
+      this.state.inputCustomCol = this.props.classCustom.inputCustomCol;   
+    }else{
+      this.setWidth();
+    }
+    
   },
 
   componentWillReceiveProps: function (nextProps) {
@@ -81,7 +91,9 @@ var Control = React.createClass({
     if ('horizontal' === this.props.layout) {
       className = 'control-label col-sm-' + (this.state.labelWidth)
     }
-
+    if(this.state.labelCustomCol){
+        className = this.state.labelCustomCol == 12 ?'control-label': ('control-label'+ this.state.labelCustomCol);
+    }
     var label = <label className={className}>{this.props.label}</label>
     return label
   },
@@ -104,7 +116,7 @@ var Control = React.createClass({
     return <p className={className}>{text}</p>
   },
 
-  getControl: function (value) {
+  getControl: function () {
     var control
     switch (this.props.type) {
       case 'checkbox':
@@ -144,7 +156,7 @@ var Control = React.createClass({
         control = <ColorPicker {...this.copyProps()} />
       break
       default:
-        control = <Input className="form-control" {...this.copyProps(value)} onBlur={this.props.onBlur} hidden={this.props.hidden} />
+        control = <Input className="form-control" {...this.copyProps()} onBlur={this.props.onBlur} hidden={this.props.hidden} />
       break
     }
 
@@ -186,7 +198,7 @@ var Control = React.createClass({
 
     var props = { 
       ref: "control",
-      value: value || this.state.value,
+      value:  this.state.value,
       onChange: this.handleChange,
     }
 
@@ -198,11 +210,13 @@ var Control = React.createClass({
   },
 
   render: function () {
+    var groupCustomCol = this.state.groupCustomCol ? ('col-sm-'+this.state.groupCustomCol) : '';
     var className = this.getClasses(
       "form-group", 
       {
         "has-error": this.state.hasError
-      }
+      },
+      groupCustomCol
     )
     var display = this.props.hidden ? 'none' : '';
     return (

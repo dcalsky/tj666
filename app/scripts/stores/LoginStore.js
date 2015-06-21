@@ -1,15 +1,12 @@
 var Reflux = require('reflux');
 var Actions = require('../actions/actions.js');
-var UserStore = require('./UserStore.js');
 var reqwest = require('reqwest');
 var URL_CROSS = 'http://www.ttjj666.com/php/Login.php';
 var URL = '../php/Login.php';
 
 var LoginStore = Reflux.createStore({
-    mixins:[Reflux.connect(UserStore,'UserStore')],
     listenables: [Actions],
     objLogin:{
-        hadLogin:false,
         isLogin:true,
         status:'',
     },
@@ -43,17 +40,33 @@ var LoginStore = Reflux.createStore({
           , method: 'post'
           , data:{action:'login',accout:data.accout,password:data.password}
           , success: function (resp) {
-               self.objLogin.hadLogin = resp.status;
-               self.objLogin.status = self.objLogin.hadLogin ? 'success' : 'error';
+               self.objLogin.status = resp.status ? 'success' : 'error';
                if(self.objLogin.status == 'success'){
-                  var userMessage={accout:data.accout,password:data.password,QQ:resp.QQ,department:resp.department};
-                  Actions.setUserMessage(userMessage);
+                  var userMessage={accout:data.accout,password:data.password};
+                  for (attr in resp.userMessage){
+                    switch (attr){
+                      case 'us_accout' : attr = 'accout' 
+                      break;
+                      case 'us_password' : attr = 'password' 
+                      break;
+                      case 'us_QQ' : attr = 'QQ' 
+                      break;
+                      case 'us_department' : attr = 'department'
+                      break;
+                      case 'us_tel' : attr = 'tel' 
+                      break;
+                      case 'us_name' : attr = 'name' 
+                      break;
+                    };
+                    userMessage[attr] = resp.userMessage['us_' + attr];
+                  };
+                  Actions.syncUserMessage(userMessage);
+                  window.location.href = '#';     
                }
                self.trigger({'objLogin':self.objLogin});
-               window.location.href = '#';
+
           }
           , error: function(err){
-               self.objLogin.hadLogin = resp.status;
                self.objLogin.status = 'error';
                self.trigger({'objLogin':self.objLogin});
           },
@@ -69,17 +82,17 @@ var LoginStore = Reflux.createStore({
           , method: 'post'
           , data:{action:'register',accout:data.accout,password:data.password}
           , success: function (resp) {
-               self.objLogin.hadLogin = resp.status;
-               self.objLogin.status = self.objLogin.hadLogin ? 'success' : 'error';
+               self.objLogin.status = resp.status ? 'success' : 'error';
                if(self.objLogin.status == 'success'){
-                  var userMessage={accout:data.accout,password:data.password,QQ:'',department:''};
-                  Actions.setUserMessage(userMessage);
+                  var userMessage={accout:data.accout,password:data.password};
+                  Actions.syncUserMessage(userMessage);
+                  window.location.href = '#';
+                  self.trigger({'objLogin':self.objLogin});
                }
                self.trigger({'objLogin':self.objLogin});
-               window.location.href = '#';
+
           }
           , error: function(err){
-               self.objLogin.hadLogin = resp.status;
                self.objLogin.status = 'error';
                self.trigger({'objLogin':self.objLogin});
           },

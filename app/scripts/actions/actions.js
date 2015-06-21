@@ -6,6 +6,7 @@ var Actions = Reflux.createActions([
   'register',
   'checkAccout',
   'getDepartment',
+  'syncUserMessage',
   'setUserMessage',
 ]);
 

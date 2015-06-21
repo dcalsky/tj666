@@ -22,8 +22,7 @@ var Form = React.createClass({
   },
 
   componentWillMount: function () {
-    if (this.props.action && this.props.autoload)
-      this.fetchData(this.props.action)
+
   },
 
   componentWillReceiveProps: function (nextProps) {
@@ -55,7 +54,7 @@ var Form = React.createClass({
         layout: this.props.layout
       }
       if (child.type === Control) {
-        props.ref = child.props.name
+        props.ref = child.props.name;
         props.value = this.state.data[child.props.name]
         if (child.props.equal)
           props.onValidate = this.equalValidate(child.props.equal, child.props.name);
@@ -70,6 +69,7 @@ var Form = React.createClass({
   equalValidate: function (targetRef, equalRef) {
     var self = this
     return function () {
+
       var target = self.refs[targetRef]
       if (!target) {
         console.log('equal target is not existed')
@@ -85,11 +85,13 @@ var Form = React.createClass({
   },
 
   handleSubmit: function (event) {
+    console.log(this.state.locked);
     if (this.state.locked) return
-    this.setState({ locked: true })
+    this.setState({ locked: true });
 
-    event.preventDefault() 
-    var success = true
+    event.preventDefault() ;
+    var success = true ;
+    console.log(this.props.department);
     Objects.forEach(this.refs, function (child) {
       var suc = child.validate();
       success = success && suc;
@@ -100,11 +102,16 @@ var Form = React.createClass({
       return
     }
     var data = this.getValue();
-    console.log(this.props.handleLogin)
-    if(this.props.isLogin){
+
+    if(this.props.isLogin === true){
        this.props.handleLogin.login(data);
-    }else{
+    }else if(this.props.isLogin === false){
        this.props.handleLogin.register(data);
+    }else if(this.props.hadSet === true){
+       this.props.handleFind.findClassmate(this.props.department);
+    }else if(this.props.hadSet === false){
+      data.department = this.props.department;
+       this.props.handleFind.setUserMessage(data);
     }
   },
   render: function () {

@@ -25,7 +25,7 @@ if (!$con)
   		$accout = $_REQUEST['accout'];
   		$password = $_REQUEST['password'];
 		$sql="select * from User_Base where us_accout='$accout' and us_password='$password' ";
-		if( $return = mysql_query($sql)){
+		if( $return = mysql_query($sql) ) {
 			$row = mysql_fetch_array($return);
 			mysql_free_result($return);
 			if(!$row){
@@ -33,20 +33,19 @@ if (!$con)
 			}else{
 				$status = true;
 			}
-			print(json_encode(array('status' => $status)));
+			print(json_encode(array('status' => $status,'userMessage' => $row)));
 		}
   	}
   	if($_REQUEST['action'] == 'register'){
   		$accout = $_REQUEST['accout'];
   		$password = $_REQUEST['password'];
-		$sql="INSERT INTO User_Base VALUES ('$accout', '$password', '', '') ";
+		$sql="INSERT INTO User_Base VALUES ('$accout', '$password', '', '','','') ";
 		if( mysql_query($sql)){
 				$status = true;
 		}else{
 				$status = false;
-		}
-				
+		}	
+  	if($_REQUEST['action'] == 'setUserMessage'){
 			print(json_encode(array('status' => $status)));
   	}
-  }
 ?>

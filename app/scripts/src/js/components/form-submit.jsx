@@ -1,12 +1,16 @@
 var React = require('react');
 var classnames = require('classnames');
+var Bs = require('react-bootstrap');
+var Button = Bs.Button ;
 
 
 var Submit = React.createClass({
 
   getInitialState: function () {
     return {
-      disabled: this.props.locked
+      disabled: this.props.locked,
+      bsStyle:this.props.bsStyle || 'primary',
+      bsSize:this.props.bsSize || '' ,
     }
   },
 
@@ -23,22 +27,12 @@ var Submit = React.createClass({
       text = text[i]
     }
 
-    var button = <button  disabled={this.state.disabled} className="btn btn-primary"  type="submit" >{text}</button>
+    var button = <Button className={this.props.className} bsStyle={this.state.bsStyle}  bsSize={this.state.bsSize} disabled={this.state.disabled} type="submit" style={this.props.style} >{text}</Button> ;
+    button = <div className="form-group">        
+                {button}
+            </div>;
     
-    if ('horizontal' === this.props.layout) {
-      var labelWidth = this.props.labelWidth || 2,
-          width = 12 - labelWidth,
-          className = classnames("col-sm-offset-" + labelWidth, "col-sm-" + width)
-
-      button = 
-        <div className="form-group">
-          <div className={className} >
-            {button}
-          </div>
-        </div>
-    }
-
-    return button
+    return button ;
   }
 })
 
