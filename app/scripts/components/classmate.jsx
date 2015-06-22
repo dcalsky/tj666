@@ -59,7 +59,7 @@ var Classmate = React.createClass({
 			<div >
               <Navbar />
               <Header color="red" headerTitle="Providing services for students." headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true} />
-              <section >
+              <section className="section" >
 	              <div className="container">
 					<Form ref="form" type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.hadSet} > 
 						<Col xs={12}>

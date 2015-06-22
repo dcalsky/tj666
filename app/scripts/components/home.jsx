@@ -46,7 +46,7 @@ var Home = React.createClass({
             <div>
               <Navbar /> 
               <Header color="blue" headerTitle="Providing services for students." headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true} />
-                <section className="section">
+                <section className="section_float">
                 <div className="container text-center">
                   <Row>
                         {this.InfoData.map(function(data){
