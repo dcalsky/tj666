@@ -8,6 +8,7 @@ var Route = Router.Route;
 var Link = Router.Link;
 var InfoItem = require('./InfoItem.jsx');
 var Navbar = require('./Navbar.jsx');
+var Header = require('./Header.jsx') , Footer = require('./Footer.jsx');
 
 var Home = React.createClass({
     InfoData:[
@@ -44,33 +45,10 @@ var Home = React.createClass({
         return (
             <div>
               <Navbar /> 
-                <Carousel >
-                    <CarouselItem>
-                      <img  height={400} alt='900x500' src='http://www.ttjj666.com/img/logo1.jpg'/>
-                      <div className='carousel-caption'>
-                        <h3>你明白的，为什么</h3>
-                        <p>会来到这座城市</p>
-                      </div>
-                    </CarouselItem>
-                    <CarouselItem>
-                      <img  height={400}  alt='900x500' src='http://www.ttjj666.com/img/logo2.jpg'/>
-                      <div className='carousel-caption'>
-                        <h3>我梦里的风景</h3>
-                        <p>这里全部都有</p>
-                      </div>
-                    </CarouselItem>
-                    <CarouselItem>
-                      <img height={400}  alt='900x500' src='http://www.ttjj666.com/img/logo3.jpg'/>
-                      <div className='carousel-caption'>
-                        <h3>给你</h3>
-                        <p>我们所共同拥有的</p>
-                      </div>
-                    </CarouselItem>
-                  </Carousel>
-
-
-                <div className="container text-center" style={{"marginTop":30,"marginBottom":50}}>
-                    <Row>
+              <Header color="blue" headerTitle="Providing services for students." headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true} />
+                <section className="section">
+                <div className="container text-center">
+                  <Row>
                         {this.InfoData.map(function(data){
                             return (
                                 <Col xs={12} sm={3} >
@@ -79,14 +57,9 @@ var Home = React.createClass({
                                 );
                         })}
                     </Row>
-                </div>
-                <hr /> 
-                <footer className="footer" >
-                      <div className="container">
-                          <p className="text-muted text-center" >Copyright &copy; 2015 周左左 All rights reserved.</p>
-                      </div>
-                </footer>
-
+                  </div>
+                </section>
+                <Footer />
             </div>
 
 
