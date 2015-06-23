@@ -57,7 +57,7 @@ var UserStore = Reflux.createStore({
     },
     quit:function(){
     	for (attr in this.user){
-    		this.user[attr] = '' ;
+    		this.user[attr] = false ;
     	};
     	this.trigger({'user':this.user})
     },

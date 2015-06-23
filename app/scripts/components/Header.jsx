@@ -11,16 +11,16 @@ var Header = React.createClass({
 			      <div className="container">
 			        <div className="row">
 			          <div className="col-xs-3">
-			            <a href="#">Weibo</a>
+			            <Link to="classmate" >新生找同学</Link>
 			          </div>
 			          <div className="col-xs-3">
-			            <a href="#">Blog</a>
+			            <a href="http://www.ttjj666.com/milk.html">校园订奶</a>
 			          </div>
 			          <div className="col-xs-3">
-			            <a href="#">Github</a>
+			            <a href="#">新生必备</a>
 			          </div>
 			          <div className="col-xs-3">
-			            <a href="#">About</a>
+			            <Link to="home" >关于我们</Link>
 			          </div>
 			        </div>
 			      </div>

@@ -85,24 +85,22 @@ var Form = React.createClass({
   },
 
   handleSubmit: function (event) {
-    console.log(this.state.locked);
     if (this.state.locked) return
     this.setState({ locked: true });
 
     event.preventDefault() ;
     var success = true ;
-    console.log(this.props.department);
     Objects.forEach(this.refs, function (child) {
       var suc = child.validate();
       success = success && suc;
     })
-
+    if(this.props.hadSet === true ){success = true}
     if (!success) {
       this.setState({ locked: false })
       return
     }
     var data = this.getValue();
-
+    console.log(this.props.hadSet);
     if(this.props.isLogin === true){
        this.props.handleLogin.login(data);
     }else if(this.props.isLogin === false){

@@ -1,5 +1,9 @@
 var Reflux = require('reflux');
 var Actions = require('../actions/actions.js');
+var reqwest = require('reqwest');
+var URL_CROSS = 'http://www.ttjj666.com/php/Login.php';
+var URL = '../php/Login.php';
+
 
 var FindclassStore = Reflux.createStore({
     listenables: [Actions],
@@ -86,16 +90,43 @@ var FindclassStore = Reflux.createStore({
         {'text':'中国语言文学系','value':'中国语言文学系'},
         {'text':'专业基础教学部','value':'专业基础教学部'},
     ],
+    classmateInfo:[],
     getInitialState:function(){
         return {
-            department:this.department
+            department: this.department,
+            findFinished: false ,
+            classmateInfo : [],
         };
     },
     init: function() {
         
     }, 
-    getDepartment:function(){
-
+    findClassmate:function(department){
+        var self = this ;
+        console.log(department);
+        reqwest({
+            url:URL_CROSS,
+            type:'json',
+            method:'get',
+            data:{action:'findClassmate',department:department},
+            success:function(resp){
+                var iInfo ={};
+                if(resp.status){
+                    resp.classmateInfo.map(function(person){
+                        for(attr in person){
+                            if(!isNaN(attr)) continue;
+                            iInfo[attr] = person[attr];
+                        }
+                        self.classmateInfo.push(iInfo);
+                        iInfo={};
+                    });
+                    self.trigger({"department":self.department,"classmateInfo":self.classmateInfo,"findFinished":true});
+                }
+            },
+            error:function(err){
+                alert("请确保网络连接正常！");
+            },
+        })
     },
 });
 

@@ -8,14 +8,8 @@ var LoginStore = require('../stores/LoginStore.js');
 var Actions = require('../actions/actions.js');
 
 var Form = require('../src/js').Form;
-
-var FixedDataTable = require('fixed-data-table');
-var ResponsiveFixedDataTable = FixedDataTable.Table;
-var Column = FixedDataTable.Column;
-
-
 var Bs = require('react-bootstrap');
-var Input = Bs.Input ,Jumbotron = Bs.Jumbotron , Col = Bs.Col , Row = Bs.Row  ;
+var Input = Bs.Input ,Jumbotron = Bs.Jumbotron , Col = Bs.Col , Row = Bs.Row   ;
 
 var Router = require('react-router');
 var Route = Router.Route;
@@ -24,6 +18,7 @@ var Link = Router.Link;
 var Navbar = require('./Navbar.jsx');
 var Footer = require('./Footer.jsx');
 var Header = require('./Header.jsx');
+var Table = require('./Table.jsx');
 
 
 var Classmate = React.createClass({
@@ -42,10 +37,10 @@ var Classmate = React.createClass({
 		if(!this.state.UserStore.user.hadLogin){window.location.href='#/login';return}
 		for (attr in this.state.UserStore.user){
 			if(!this.state.UserStore.user[attr]){
-				this.setState({hadSet:false,selectLabel:'请选择您的专业:',});
+				this.setState({selectLabel:'请选择您的专业:',});
 				break ;
 			}
-			this.setState({hadSet:true,selectLabel:'请选择要查询的专业:',});
+			this.setState({selectLabel:'请选择要查询的专业:',});
 		}
 
 	}, 
@@ -61,7 +56,7 @@ var Classmate = React.createClass({
               <Header color="red" headerTitle="Providing services for students." headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true} />
               <section className="section" >
 	              <div className="container">
-					<Form ref="form" type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.hadSet} > 
+					<Form ref="form" type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.UserStore.user.messageHadSet} > 
 						<Col xs={12}>
 					    <Input ref="department" type="select" className="form-control" label={this.state.selectLabel} placeholder='select' onChange={this.handleSelectChange}>
 					      	{this.state.FindclassStore.department.map(function(obj){
@@ -75,6 +70,11 @@ var Classmate = React.createClass({
 				        <Form.Submit text={["Find Them","查找中..."]} bsStyle='success' bsSize="large" style={{"width":"100%"}} />
 					</Form>
 				  </div>
+			  </section>
+			  <section>
+			  	<div className="container">
+			  		<Table finished={this.state.FindclassStore.findFinished} data={this.state.FindclassStore.classmateInfo} />
+			  	</div>
 			  </section>
 			  <Footer />
              </div>

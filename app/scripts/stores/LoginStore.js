@@ -44,23 +44,11 @@ var LoginStore = Reflux.createStore({
                if(self.objLogin.status == 'success'){
                   var userMessage={accout:data.accout,password:data.password};
                   for (attr in resp.userMessage){
-                    switch (attr){
-                      case 'us_accout' : attr = 'accout' 
-                      break;
-                      case 'us_password' : attr = 'password' 
-                      break;
-                      case 'us_QQ' : attr = 'QQ' 
-                      break;
-                      case 'us_department' : attr = 'department'
-                      break;
-                      case 'us_tel' : attr = 'tel' 
-                      break;
-                      case 'us_name' : attr = 'name' 
-                      break;
-                    };
-                    userMessage[attr] = resp.userMessage['us_' + attr];
+                    if(!isNaN(attr)) continue;
+                    userMessage[attr] = resp.userMessage[attr];
                   };
                   Actions.syncUserMessage(userMessage);
+                  console.log(userMessage);
                   window.location.href = '#';     
                }
                self.trigger({'objLogin':self.objLogin});

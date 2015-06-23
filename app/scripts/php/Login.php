@@ -9,7 +9,7 @@ if (!$con)
   	mysql_query('SET NAMES UTF8');
   	if($_REQUEST['action'] == 'checkAccout'){
   		$accout = $_REQUEST['accout'];
-		$sql="select * from User_Base where us_accout='$accout'";
+		$sql="select * from User_Base where accout='$accout'";
 		if( $return = mysql_query($sql)){
 			$row = mysql_fetch_array($return);
 			mysql_free_result($return);
@@ -24,7 +24,7 @@ if (!$con)
   	if($_REQUEST['action'] == 'login'){
   		$accout = $_REQUEST['accout'];
   		$password = $_REQUEST['password'];
-		$sql="select * from User_Base where us_accout='$accout' and us_password='$password' ";
+		$sql="select * from User_Base where accout='$accout' and password='$password' ";
 		if( $return = mysql_query($sql) ) {
 			$row = mysql_fetch_array($return);
 			mysql_free_result($return);
@@ -49,7 +49,7 @@ if (!$con)
   	}
   	if($_REQUEST['action'] == 'setUserMessage'){
   		$message = $_REQUEST['message'];
-		$sql="update User_Base set us_name='$message[name]',us_department='$message[department]',us_QQ='$message[QQ]',us_tel='$message[tel]' where us_accout='$message[accout]' ";
+		$sql="update User_Base set name='$message[name]',department='$message[department]',QQ='$message[QQ]',tel='$message[tel]' where accout='$message[accout]' ";
 		if(  mysql_query($sql)){
 				$status = true;
 			}else{
@@ -57,5 +57,21 @@ if (!$con)
 			}
 			print(json_encode(array('status' => $status)));
 		}
+  	if($_REQUEST['action'] == 'findClassmate'){
+  		$department = $_REQUEST['department'];
+		$sql="select accout,QQ,tel,name from User_Base where department='$department' ";
+		if( $return = mysql_query($sql) ) {
+			$result = array();
+			while($row = mysql_fetch_array($return)){
+				$result[] = $row ;
+			}
+			if(!$result){
+				$status = false;
+			}else{
+				$status = true;
+			}
+			print(json_encode(array('status' => $status,'classmateInfo' => $result)));
+		}
   	}
+  }
 ?>
