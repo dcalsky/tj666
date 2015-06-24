@@ -27,7 +27,10 @@ var Form = React.createClass({
 
   componentWillReceiveProps: function (nextProps) {
     if(nextProps.status){
-      this.setState({ locked: false })
+      this.setState({ locked: false });
+    }
+    if(nextProps.findFinished){
+      this.setState({ locked: false });
     }
   },
   getValue: function () {
@@ -100,7 +103,7 @@ var Form = React.createClass({
       return
     }
     var data = this.getValue();
-    console.log(this.props.hadSet);
+
     if(this.props.isLogin === true){
        this.props.handleLogin.login(data);
     }else if(this.props.isLogin === false){

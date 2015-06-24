@@ -28,7 +28,7 @@ var Header = React.createClass({
 		return(
 			<section>
 				<div className={classnames("header_"+this.props.color)} >
-			      <div className="container">
+			      <div className="container" >
 			        <p className="lead">微同济</p>
 			        <h1>{this.props.headerTitle} <br/></h1>
 			        <div className="lead" >{this.props.headerParagraph}</div>

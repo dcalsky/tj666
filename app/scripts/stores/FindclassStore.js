@@ -112,6 +112,7 @@ var FindclassStore = Reflux.createStore({
             success:function(resp){
                 var iInfo ={};
                 if(resp.status){
+                    self.classmateInfo=[];
                     resp.classmateInfo.map(function(person){
                         for(attr in person){
                             if(!isNaN(attr)) continue;

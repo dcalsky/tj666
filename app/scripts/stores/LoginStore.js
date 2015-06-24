@@ -42,14 +42,15 @@ var LoginStore = Reflux.createStore({
           , success: function (resp) {
                self.objLogin.status = resp.status ? 'success' : 'error';
                if(self.objLogin.status == 'success'){
-                  var userMessage={accout:data.accout,password:data.password};
-                  for (attr in resp.userMessage){
-                    if(!isNaN(attr)) continue;
-                    userMessage[attr] = resp.userMessage[attr];
-                  };
-                  Actions.syncUserMessage(userMessage);
-                  console.log(userMessage);
-                  window.location.href = '#';     
+                var userMessage={accout:data.accout,password:data.password};
+                for (attr in resp.userMessage){
+                  if(!isNaN(attr)) continue;
+                  userMessage[attr] = resp.userMessage[attr];
+                };
+                Actions.syncUserMessage(userMessage);
+                window.location.href = '#';     
+               }else{
+                alert("账号密码错误。");
                }
                self.trigger({'objLogin':self.objLogin});
 
@@ -57,6 +58,7 @@ var LoginStore = Reflux.createStore({
           , error: function(err){
                self.objLogin.status = 'error';
                self.trigger({'objLogin':self.objLogin});
+               alert("请确保网络正常连接");
           },
         });
     },
@@ -75,7 +77,8 @@ var LoginStore = Reflux.createStore({
                   var userMessage={accout:data.accout,password:data.password};
                   Actions.syncUserMessage(userMessage);
                   window.location.href = '#';
-                  self.trigger({'objLogin':self.objLogin});
+               }else{
+                alert("未知错误，请重试！");
                }
                self.trigger({'objLogin':self.objLogin});
 
@@ -83,6 +86,7 @@ var LoginStore = Reflux.createStore({
           , error: function(err){
                self.objLogin.status = 'error';
                self.trigger({'objLogin':self.objLogin});
+               alert("请确保网络正常连接");
           },
         });
     },
