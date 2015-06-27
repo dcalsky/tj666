@@ -1,4 +1,5 @@
 var Reflux = require('reflux');
+var Storage = require('react-storage');
 var Actions = require('../actions/actions.js');
 var reqwest = require('reqwest');
 var URL_CROSS = 'http://www.ttjj666.com/php/Login.php';
@@ -48,6 +49,7 @@ var LoginStore = Reflux.createStore({
                   userMessage[attr] = resp.userMessage[attr];
                 };
                 Actions.syncUserMessage(userMessage);
+                Storage.set("user",JSON.stringify(userMessage));
                 window.location.href = '#';     
                }else{
                 alert("账号密码错误。");
@@ -76,6 +78,7 @@ var LoginStore = Reflux.createStore({
                if(self.objLogin.status == 'success'){
                   var userMessage={accout:data.accout,password:data.password};
                   Actions.syncUserMessage(userMessage);
+                  Storage.set("user",JSON.stringify(userMessage));
                   window.location.href = '#';
                }else{
                 alert("未知错误，请重试！");

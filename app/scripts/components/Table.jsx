@@ -9,7 +9,9 @@ var Table = React.createClass({
 	},
 	render:function(){
 		if(!this.props.finished){
-			return null ;
+			return null;
+		}else if(this.props.finished=='error'){
+			return <h1 className="text-center">抱歉,暂未搜索到该专业的15级学生，请稍后再试。</h1> ;
 		}else{
 			return(     
 				<BsTable>

@@ -1,5 +1,6 @@
 var React = require('react');
 var Reflux = require('reflux');
+var Stroage = require('react-storage');
 
 var Bs = require('react-bootstrap');
 var Button = Bs.Button,  Carousel = Bs.Carousel ,CarouselItem = Bs.CarouselItem , Row = Bs.Row ,Col = Bs.Col;
@@ -17,35 +18,38 @@ var Home = React.createClass({
             InfoTitle:"找到新同学",
             InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？这不是幻想，大家的联系方式这里都有！",
             color:"#fc615c",
-            Link:"classmate",
+            Link:"#/classmate",
         },
         {
             key:1,
-            InfoTitle:"找到新同学",
-            InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？这不是幻想，大家的联系方式这里都有！",
+            InfoTitle:"同济订奶",
+            InfoMessage:"每天早上为您准备了新鲜的牛奶和早点，准时送到寝室门口！",
             color:"#fdbd40",
-            Link:"classmate",
+            Link:"milk.html",
         },
         {
             key:3,
-            InfoTitle:"找到新同学",
-            InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？这不是幻想，大家的联系方式这里都有！",
+            InfoTitle:"新生必备",
+            InfoMessage:"想知道来同济大学入学都应该带一些必备的物品吗?校园周边的小吃,各种信息,一网打尽！",
             color:"#34c849",
-            Link:"classmate",
+            Link:"#/home",
+            disabled:true,
         },
         {
             key:4,
-            InfoTitle:"找到新同学",
-            InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？这不是幻想，大家的联系方式这里都有！",
+            InfoTitle:"新生选课",
+            InfoMessage:"学长学姐已经被天天点名的老师折磨得不成人样,选不点名、100%拿优的课,来瞧瞧！",
             color:"#54c9ff",
-            Link:"classmate",
+            Link:"#/home",
+            disabled:true,
         },
     ],
     render: function() {
         return (
             <div>
-              <Navbar /> 
-              <Header color="blue" headerTitle="Providing services for students." headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true} />
+              <Navbar />
+
+              <Header color="blue" headerTitle="行动让改变发生" headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true} />
                 <section className="section_float">
                 <div className="container text-center">
                   <Row>

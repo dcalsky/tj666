@@ -1,4 +1,6 @@
 var Reflux = require('reflux');
+var Storage = require('react-storage');
+
 var Actions = require('../actions/actions.js');
 var reqwest = require('reqwest');
 var URL_CROSS = 'http://www.ttjj666.com/php/Login.php';
@@ -18,10 +20,22 @@ var UserStore = Reflux.createStore({
       hadLogin:false,
     },
     getInitialState:function(){
-    	return {
-    		user:this.user,
-    	}
+
+      if(Storage.has("user") && Storage.get("user")){        
+        var storage_user = JSON.parse(Storage.get("user"));
+        this.user.hadLogin = true ;
+        for (attr in storage_user){
+          this.user[attr] = storage_user[attr];
+        }
+        if(this.user.name && this.user.QQ && this.user.department){
+          this.user.messageHadSet = true ;
+        }
+      }
+        return {
+          user:this.user
+        }
     },
+
     init:function(){
     	this.trigger({'user':this.user});
     },
@@ -47,6 +61,7 @@ var UserStore = Reflux.createStore({
           , success: function (resp) {
                if(resp.status){
                     self.user.messageHadSet = true ;
+                    Storage.set("user",JSON.stringify(self.user));
                     self.trigger({'user':self.user});
                }
           }
@@ -59,6 +74,8 @@ var UserStore = Reflux.createStore({
     	for (attr in this.user){
     		this.user[attr] = false ;
     	};
+      Storage.clear();
+      Storage.set("user",null);
     	this.trigger({'user':this.user})
     },
 });

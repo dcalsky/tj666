@@ -32,6 +32,9 @@ var Form = React.createClass({
     if(nextProps.findFinished){
       this.setState({ locked: false });
     }
+    if(nextProps.hadSet){
+      this.setState({locked:false});
+    }
   },
   getValue: function () {
     var data = this.state.data

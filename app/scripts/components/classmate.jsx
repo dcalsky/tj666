@@ -10,6 +10,7 @@ var Actions = require('../actions/actions.js');
 var Form = require('../src/js').Form;
 var Bs = require('react-bootstrap');
 var Input = Bs.Input ,Jumbotron = Bs.Jumbotron , Col = Bs.Col , Row = Bs.Row   ;
+var Select = require('react-select');
 
 var Router = require('react-router');
 var Route = Router.Route;
@@ -45,30 +46,31 @@ var Classmate = React.createClass({
 		}
 
 	}, 
-	handleSelectChange:function(){
-		this.setState({
-			department:this.refs.department.getValue()
+	handleSelectChange:function(val) {
+    	this.setState({
+			department:val
 		});
 	},
 	render:function(){
 		return(
 			<div >
               <Navbar />
-              <Header color="red" headerTitle="Providing services for students." headerParagraph={<p>"Talk is cheap,Show me the code." <br/> {"Linus Torvalds"}</p>} subHeader={true}  />
+              <Header color="red" headerTitle="同济新生找同学" headerParagraph={<p>还没开学就想先认识同学？ <br/> 只需一步</p>} subHeader={true}  />
               <section className="section" >
-	              <div className="container">
-					<Form ref="form" type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.UserStore.user.messageHadSet} findFinished={this.state.FindclassStore.findFinished} > 
-						<Col xs={12}>
-					    <Input ref="department" type="select" className="form-control" label={this.state.selectLabel} placeholder='select' onChange={this.handleSelectChange}>
-					      	{this.state.FindclassStore.department.map(function(obj){
-					      		return (<option value={obj.value}>{obj.text}</option>)
-					      	})}
-					    </Input>
+	              <div className="container" style={{"paddingTop":30}}>
+					<Form ref="form"   type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.UserStore.user.messageHadSet} findFinished={this.state.FindclassStore.findFinished} > 
+						<Col xs={12} style={{"marginBottom":30}} >
+						<Select
+						    name="select"
+						    value={this.state.department}
+						    options={this.state.FindclassStore.department}
+						    onChange={this.handleSelectChange}
+						/>
 					    </Col>
 						<Form.Control name="name" required={true} minlen={2} maxlen={8} classCustom={{labelCustomCol:12,groupCustomCol:5}} type="text" label="* 姓名:" placeholder="请输入您的姓名(绑定至同济大学账号)"  hidden={this.state.UserStore.user.messageHadSet} />
 			          	<Form.Control name="QQ" required={true} minlen={6} maxlen={13} classCustom={{labelCustomCol:12,groupCustomCol:7}} type="integer" label="* QQ号:" placeholder="请输入您的QQ号(绑定至同济大学账号)"  hidden={this.state.UserStore.user.messageHadSet} />
 			            <Form.Control name="tel"  minlen={11} maxlen={13} classCustom={{labelCustomCol:12,groupCustomCol:12}} type="integer" label="手机号码:" placeholder="请输入您的手机号码(绑定至同济大学账号)"  hidden={this.state.UserStore.user.messageHadSet} />			        
-				        <Form.Submit text={["Find Them","查找中..."]} bsStyle='success' bsSize="large" style={{"width":"100%"}} />
+				        <Form.Submit text={["Find Them","Find Them..."]} bsStyle='success' bsSize="large" style={{"width":"100%"}} />
 					</Form>
 				  </div>
 			  </section>
