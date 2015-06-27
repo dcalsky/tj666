@@ -65,6 +65,7 @@ var Classmate = React.createClass({
 						    value={this.state.department}
 						    options={this.state.FindclassStore.department}
 						    onChange={this.handleSelectChange}
+						    searchable={false}
 						/>
 					    </Col>
 						<Form.Control name="name" required={true} minlen={2} maxlen={8} classCustom={{labelCustomCol:12,groupCustomCol:5}} type="text" label="* 姓名:" placeholder="请输入您的姓名(绑定至同济大学账号)"  hidden={this.state.UserStore.user.messageHadSet} />
