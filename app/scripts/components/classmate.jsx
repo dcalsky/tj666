@@ -31,7 +31,7 @@ var Classmate = React.createClass({
 	getInitialState: function () {
 	    return {
 	        selectLabel:'请选择您的专业:',
-	        department:'材料化学研究所',
+	        department:'',
 	        tableRender:false,
 	    };
 	},
@@ -61,7 +61,7 @@ var Classmate = React.createClass({
 					<Form ref="form"   type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.UserStore.user.messageHadSet} findFinished={this.state.FindclassStore.findFinished} > 
 						<Col xs={12} style={{"marginBottom":30}} >
 						<Select
-						    name="select"
+						    placeholder={this.state.selectLabel}
 						    value={this.state.department}
 						    options={this.state.FindclassStore.department}
 						    onChange={this.handleSelectChange}

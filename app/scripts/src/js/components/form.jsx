@@ -111,9 +111,9 @@ var Form = React.createClass({
        this.props.handleLogin.login(data);
     }else if(this.props.isLogin === false){
        this.props.handleLogin.register(data);
-    }else if(this.props.hadSet === true){
+    }else if(this.props.hadSet === true && this.props.department){
        this.props.handleFind.findClassmate(this.props.department);
-    }else if(this.props.hadSet === false){
+    }else if(this.props.hadSet === false && this.props.department){
       data.department = this.props.department;
        this.props.handleFind.setUserMessage(data);
     }
