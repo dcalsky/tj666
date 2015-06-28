@@ -74,6 +74,8 @@ var UserStore = Reflux.createStore({
     	for (attr in this.user){
     		this.user[attr] = false ;
     	};
+      this.user.messageHadSet = false ;
+      this.user.hadLogin = false ;
       Storage.clear();
       Storage.set("user",null);
     	this.trigger({'user':this.user})

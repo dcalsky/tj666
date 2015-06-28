@@ -213,6 +213,7 @@ var Control = React.createClass({
     var groupCustomCol = this.state.groupCustomCol ? ('col-sm-'+this.state.groupCustomCol) : '';
     var className = this.getClasses(
       "form-group", 
+      "col-xs-12",
       {
         "has-error": this.state.hasError
       },

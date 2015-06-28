@@ -57,7 +57,7 @@ var Classmate = React.createClass({
               <Navbar />
               <Header color="red" headerTitle="同济新生找同学" headerParagraph={<p>还没开学就想先认识同学？ <br/> 只需一步</p>} subHeader={true}  />
               <section className="section" >
-	              <div className="container" style={{"paddingTop":30}}>
+	              <div className="container" style={{"paddingTop":10}}>
 					<Form ref="form"   type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.UserStore.user.messageHadSet} findFinished={this.state.FindclassStore.findFinished} > 
 						<Col xs={12} style={{"marginBottom":30}} >
 						<Select
