@@ -73,5 +73,16 @@ if (!$con)
 			print(json_encode(array('status' => $status,'classmateInfo' => $result)));
 		}
   	}
+  	if($_REQUEST['action'] == 'getClassinfo'){
+  		$accout = $_REQUEST['accout'];
+  		$password = $_REQUEST['password'];
+		$sql="INSERT INTO User_Base VALUES ('$accout', '$password', '', '','','') ";
+		if( mysql_query($sql)){
+				$status = true;
+		}else{
+				$status = false;
+		}	
+			print(json_encode(array('status' => $status)));
+  	}
   }
 ?>

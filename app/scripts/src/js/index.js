@@ -23,7 +23,8 @@ module.exports = {
   Table: require('./components/table.jsx'),
   TextArea: require('./components/textarea.jsx'),
   Tree: require('./components/tree.jsx'),
-
+  Combobox: require('./components/combobox.js'),
+  Option: require('./components/option.js'),
   Lang: Lang,
 
   Actions: {

@@ -7,11 +7,14 @@ var Layout = require('./components/layout');
 var Home = require('./components/home');
 var Classmate = require('./components/classmate');
 var Login = require('./components/login');
+var Xuanke = require('./components/Xuanke');
+
 var routes = (
 	<Route name="layout" path="/" handler={Layout}>
 		<Route name="home" handler={Home} />
 		<Route name="classmate" handler={Classmate} />
 		<Route name="login" handler={Login} />
+		<Route name="xuanke" handler={Xuanke} />
 		<DefaultRoute handler={Home} />
 
 	</Route>
