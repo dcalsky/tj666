@@ -19,6 +19,7 @@ var Home = React.createClass({
             InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？这不是幻想，大家的联系方式这里都有！",
             color:"#fc615c",
             Link:"#/classmate",
+            buttonTitle:"进入",
         },
         {
             key:"item2",
@@ -26,6 +27,7 @@ var Home = React.createClass({
             InfoMessage:"每天早上为您准备了新鲜的牛奶和早点，准时送到寝室门口！",
             color:"#fdbd40",
             Link:"milk.html",
+            buttonTitle:"进入",
         },
         {
             key:"item3",
@@ -33,6 +35,9 @@ var Home = React.createClass({
             InfoMessage:"学长学姐已经被天天点名的老师折磨得不成人样,选不点名、100%拿优的课,来瞧瞧！",
             color:"#54c9ff",
             Link:"#/xuanke",
+            disabled:true,
+            buttonTitle:"即将推出",
+
         },
         {
             key:"item4",
@@ -41,6 +46,7 @@ var Home = React.createClass({
             color:"#34c849",
             Link:"#/home",
             disabled:true,
+            buttonTitle:"即将推出",
         },
     ],
     render: function() {

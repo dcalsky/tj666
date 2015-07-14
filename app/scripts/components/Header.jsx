@@ -17,10 +17,10 @@ var Header = React.createClass({
 			            <a href="http://www.ttjj666.com/milk.html">校园订奶</a>
 			          </div>
 			          <div className="col-xs-3">
-			            <Link to="xuanke"> 选课必知 </Link>
+			            <Link to="home"> 选课必知(即将推出) </Link>
 			          </div>
 			          <div className="col-xs-3">
-			            <Link to="home" >新生必备</Link>
+			            <Link to="home" >新生必备(即将推出) </Link>
 			          </div>
 			        </div>
 			      </div>

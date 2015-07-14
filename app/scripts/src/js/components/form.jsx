@@ -100,13 +100,12 @@ var Form = React.createClass({
       var suc = child.validate();
       success = success && suc;
     })
-    if(this.props.hadSet === true ){success = true}
+    if(this.props.hadSet === true && this.props.department ){success = true}
     if (!success) {
       this.setState({ locked: false })
       return
     }
     var data = this.getValue();
-
     if(this.props.isLogin === true){
        this.props.handleLogin.login(data);
     }else if(this.props.isLogin === false){
@@ -115,7 +114,7 @@ var Form = React.createClass({
        this.props.handleFind.findClassmate(this.props.department);
     }else if(this.props.hadSet === false && this.props.department){
       data.department = this.props.department;
-       this.props.handleFind.setUserMessage(data);
+      this.props.handleFind.setUserMessage(data);
     }
   },
   render: function () {

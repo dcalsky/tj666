@@ -15,7 +15,7 @@ var InfoItem = React.createClass({
 				<img className="img-circle " style={{"backgroundColor":this.props.InfoData.color,"width":150,"height":150}} />
 				<h2> {this.props.InfoData.InfoTitle} </h2>
 				<p> {this.props.InfoData.InfoMessage} </p>
-				<a href={this.props.InfoData.Link} className={classnames("btn","btn-default",disabled)} role="button"  > 进入 </a>
+				<a href={this.props.InfoData.Link} className={classnames("btn","btn-default",disabled)} role="button"  > {this.props.InfoData.buttonTitle} </a>
 			</div>
 			);
 	}
