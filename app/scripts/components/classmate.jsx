@@ -9,7 +9,7 @@ var Actions = require('../actions/actions.js');
 
 var Form = require('../src/js').Form;
 var Bs = require('react-bootstrap');
-var Input = Bs.Input ,Jumbotron = Bs.Jumbotron , Col = Bs.Col , Row = Bs.Row   ;
+var Input = Bs.Input , Jumbotron = Bs.Jumbotron , Col = Bs.Col , Row = Bs.Row  , PageHeader = Bs.PageHeader ; 
 var Select = require('react-select');
 
 var Router = require('react-router');
@@ -57,6 +57,7 @@ var Classmate = React.createClass({
               <Navbar />
               <Header color="red" headerTitle="同济新生找同学" headerParagraph={<p>还没开学就想先认识同学？ <br/> 只需一步</p>} subHeader={true}  />
               <section className="section" >
+	              <PageHeader> <p className="text-center" >新生找同学</p></PageHeader>
 	              <div className="container" style={{"paddingTop":10}}>
 					<Form ref="form"   type="json" handleFind={this.handleFind} department={this.state.department} hadSet={this.state.UserStore.user.messageHadSet} findFinished={this.state.FindclassStore.findFinished} > 
 						<Col xs={12} style={{"marginBottom":30}} >

@@ -84,5 +84,68 @@ if (!$con)
 		}	
 			print(json_encode(array('status' => $status)));
   	}
+  	if($_REQUEST['action'] == 'refreshWish'){
+		$sql = "SELECT * FROM Wall ORDER BY id ASC LIMIT 6 ";
+		if( $return = mysql_query($sql) ) {
+			$result = array();
+			while($row = mysql_fetch_array($return)){
+				$result[] = $row ;
+			}
+			if(!$result){
+				$status = false;
+			}else{
+				$status = true;
+			}
+			print(json_encode(array('status' => $status,'wishs' => $result)));
+		}
+  	}
+  	if($_REQUEST['action'] == 'loadWish'){
+  		$page = $_REQUEST['page'];
+  		$num = $page * 6 ;
+		$sql="SELECT * FROM Wall WHERE id>$num ORDER BY id ASC LIMIT 6";
+		if( $return = mysql_query($sql) ) {
+			$result = array();
+			while($row = mysql_fetch_array($return)){
+				$result[] = $row ;
+			}
+			if(!$result){
+				$status = false;
+			}else{
+				$status = true;
+			}
+			print(json_encode(array('status' => $status,'wishs' => $result)));
+		}
+  	}
+  	if($_REQUEST['action'] == 'viewMyWish'){
+  		$accout = $_REQUEST['accout'];
+		$sql="select * from Wall where accout='$accout' ";
+		if( $return = mysql_query($sql) ) {
+			$result = array();
+			while($row = mysql_fetch_array($return)){
+				$result[] = $row ;
+			}
+			if(!$result){
+				$status = false;
+			}else{
+				$status = true;
+			}
+			print(json_encode(array('status' => $status,'wishs' => $result)));
+		}
+  	}
+  	if($_REQUEST['action'] == 'addWish'){
+  		$contact = $_REQUEST['contact'];
+  		$title = $_REQUEST['title'];
+  		$content = $_REQUEST['content'];
+  		$accout = $_REQUEST['accout'];
+  		$time = $_REQUEST['time'];
+  		$gender = $_REQUEST['gender'];
+		$sql="INSERT INTO Wall (accout,title,content,contact,time,gender) VALUES ('$accout', '$title', '$content', '$contact','$time','$gender') ";
+		if( mysql_query($sql)){
+				$status = true;
+		}else{
+				$status = false;
+		}	
+			print(json_encode(array('status' => $status)));
+  	}
   }
 ?>

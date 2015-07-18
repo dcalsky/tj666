@@ -9,6 +9,10 @@ var Actions = Reflux.createActions([
   'setUserMessage',
   'syncUserMessage',
   'findClassmate',
+  'addWish',
+  'refreshWish',
+  'loadWish',
+  'viewMyWish',
 ]);
 
 module.exports = Actions;
