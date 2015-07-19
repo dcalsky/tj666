@@ -9,6 +9,7 @@ var Classmate = require('./components/classmate');
 var Login = require('./components/login');
 var Xuanke = require('./components/Xuanke');
 var Wall = require('./components/Wall');
+var AddWish = require('./components/AddWish');
 
 var routes = (
 	<Route name="layout" path="/" handler={Layout}>
@@ -17,6 +18,7 @@ var routes = (
 		<Route name="login" handler={Login} />
 		<Route name="xuanke" handler={Xuanke} />
 		<Route name="wall" handler={Wall} />
+			<Route name="addWish" handler={AddWish} />
 		<DefaultRoute handler={Home} />
 
 	</Route>

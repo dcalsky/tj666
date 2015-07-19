@@ -13,8 +13,6 @@ var Input = Bs.Input , Jumbotron = Bs.Jumbotron , Col = Bs.Col , Row = Bs.Row  ,
 var Select = require('react-select');
 
 var Router = require('react-router');
-var Route = Router.Route;
-var Link = Router.Link;
 
 var Navbar = require('./Navbar.jsx');
 var Footer = require('./Footer.jsx');
@@ -23,7 +21,7 @@ var Table = require('./Table.jsx');
 
 
 var Classmate = React.createClass({
-	mixins:[Reflux.connect(FindclassStore, 'FindclassStore'),Reflux.connect(UserStore, 'UserStore'),Reflux.connect(LoginStore,'LoginStore')],
+	mixins:[Reflux.connect(FindclassStore, 'FindclassStore'),Reflux.connect(UserStore, 'UserStore'),Reflux.connect(LoginStore,'LoginStore'),Router.Navigation],
 	handleFind:{
 		findClassmate:Actions.findClassmate,
 		setUserMessage:Actions.setUserMessage,
@@ -36,7 +34,10 @@ var Classmate = React.createClass({
 	    };
 	},
 	componentWillMount:function(){
-		if(!this.state.UserStore.user.hadLogin){window.location.href='#/login';return}
+		if(!this.state.UserStore.user.hadLogin){
+			this.transitionTo('login');
+			return;
+		}
 		for (attr in this.state.UserStore.user){
 			if(!this.state.UserStore.user[attr]){
 				this.setState({selectLabel:'请选择您的专业:',});

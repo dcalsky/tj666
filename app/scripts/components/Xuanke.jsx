@@ -18,8 +18,6 @@ var ComboboxOption = require('../src/js').Option;
 var states = require('../states');
 
 var Router = require('react-router');
-var Route = Router.Route;
-var Link = Router.Link;
 
 var Navbar = require('./Navbar.jsx');
 var Footer = require('./Footer.jsx');

@@ -1,12 +1,13 @@
 var React = require('react');
 var Reflux = require('reflux');
+
 var Stroage = require('react-storage');
 
 var Bs = require('react-bootstrap');
 var Button = Bs.Button,  Carousel = Bs.Carousel ,CarouselItem = Bs.CarouselItem , Row = Bs.Row ,Col = Bs.Col;
+
 var Router = require('react-router');
-var Route = Router.Route;
-var Link = Router.Link;
+
 var InfoItem = require('./InfoItem.jsx');
 var Navbar = require('./Navbar.jsx');
 var Header = require('./Header.jsx') , Footer = require('./Footer.jsx');

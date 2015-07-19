@@ -1,10 +1,11 @@
 var React = require('react');
-var Bs = require('react-bootstrap');
 var classnames = require('classnames');
+
+var Bs = require('react-bootstrap');
 var Button = Bs.Button ;
+
 var Router = require('react-router');
-var Route = Router.Route;
-var Link = Router.Link;
+
 var LoginStore = require('../stores/LoginStore.js');
 
 var InfoItem = React.createClass({

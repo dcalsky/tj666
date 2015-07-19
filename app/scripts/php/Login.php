@@ -85,7 +85,7 @@ if (!$con)
 			print(json_encode(array('status' => $status)));
   	}
   	if($_REQUEST['action'] == 'refreshWish'){
-		$sql = "SELECT * FROM Wall ORDER BY id ASC LIMIT 6 ";
+		$sql = "SELECT * FROM Wall ORDER BY id DESC LIMIT 6 ";
 		if( $return = mysql_query($sql) ) {
 			$result = array();
 			while($row = mysql_fetch_array($return)){
@@ -100,9 +100,10 @@ if (!$con)
 		}
   	}
   	if($_REQUEST['action'] == 'loadWish'){
+  		$accout = $_REQUEST['accout'];
   		$page = $_REQUEST['page'];
   		$num = $page * 6 ;
-		$sql="SELECT * FROM Wall WHERE id>$num ORDER BY id ASC LIMIT 6";
+		$sql="SELECT * FROM Wall WHERE id<=(SELECT max(id) FROM Wall)-$num ORDER BY id DESC LIMIT 6";
 		if( $return = mysql_query($sql) ) {
 			$result = array();
 			while($row = mysql_fetch_array($return)){
@@ -113,12 +114,17 @@ if (!$con)
 			}else{
 				$status = true;
 			}
-			print(json_encode(array('status' => $status,'wishs' => $result)));
 		}
+		$liked = mysql_query("select wish_id from Wish_Like where accout='$accout'");
+			$likedUser = array();
+			while($row = mysql_fetch_array($liked)){
+				$likedUser[] = $row ;
+			}
+			print(json_encode(array('status' => $status,'wishs' => $result,'liked' => $likedUser)));
   	}
   	if($_REQUEST['action'] == 'viewMyWish'){
   		$accout = $_REQUEST['accout'];
-		$sql="select * from Wall where accout='$accout' ";
+		$sql="select * from Wall where accout='$accout' ORDER BY id DESC ";
 		if( $return = mysql_query($sql) ) {
 			$result = array();
 			while($row = mysql_fetch_array($return)){
@@ -129,9 +135,46 @@ if (!$con)
 			}else{
 				$status = true;
 			}
-			print(json_encode(array('status' => $status,'wishs' => $result)));
+		$liked = mysql_query("select wish_id from Wish_Like where accout='$accout'");
+			$likedUser = array();
+			while($row = mysql_fetch_array($liked)){
+				$likedUser[] = $row ;
+			}
+			print(json_encode(array('status' => $status,'wishs' => $result,'liked' => $likedUser)));
 		}
   	}
+  	if($_REQUEST['action'] == 'like'){
+  		$id = $_REQUEST['id'];
+  		$accout = $_REQUEST['accout'];
+		$sql="update Wall set love = love + 1 where id = $id ";
+		if(  mysql_query($sql)){
+				$status = true;
+			}else{
+				$status = false;
+			}
+		$sql="INSERT INTO Wish_Like (wish_id,accout) VALUES ($id,'$accout')";
+		if(  mysql_query($sql)){
+			}else{
+				$status = false;
+			}
+			print(json_encode(array('status' => $status)));
+	}
+  	if($_REQUEST['action'] == 'unlike'){
+  		$id = $_REQUEST['id'];
+  		$accout = $_REQUEST['accout'];
+		$sql="update Wall set love = love - 1 where id = $id ";
+		if(  mysql_query($sql)){
+				$status = true;
+			}else{
+				$status = false;
+			}
+		$sql="delete from Wish_Like where wish_id = $id and accout='$accout'";
+		if(  mysql_query($sql)){
+			}else{
+				$status = false;
+			}
+			print(json_encode(array('status' => $status)));
+	}
   	if($_REQUEST['action'] == 'addWish'){
   		$contact = $_REQUEST['contact'];
   		$title = $_REQUEST['title'];
@@ -139,7 +182,8 @@ if (!$con)
   		$accout = $_REQUEST['accout'];
   		$time = $_REQUEST['time'];
   		$gender = $_REQUEST['gender'];
-		$sql="INSERT INTO Wall (accout,title,content,contact,time,gender) VALUES ('$accout', '$title', '$content', '$contact','$time','$gender') ";
+  		$name = $_REQUEST['name'];
+		$sql="INSERT INTO Wall (accout,title,content,contact,time,gender,name) VALUES ('$accout', '$title', '$content', '$contact','$time','$gender','$name') ";
 		if( mysql_query($sql)){
 				$status = true;
 		}else{
