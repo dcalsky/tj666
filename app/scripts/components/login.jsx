@@ -33,7 +33,7 @@ var Login = React.createClass({
 			           	<Form.Submit text={["登陆","登陆中..."]}  className="col-sm-8 col-sm-offset-2 col-xs-7 col-xs-offset-2" bsSize="large" href="#"  />
 			          </Form>
 			      </section>
-			      <Footer />
+			      <Footer name={"周左左"} />
 				</div>
 			)
 	},

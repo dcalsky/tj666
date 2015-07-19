@@ -117,7 +117,7 @@ var AddWish = React.createClass({
               	</Col>
               	</form>
 			  </section>
-			  <Footer />
+			  <Footer name={"微同济"} />
              </div>
 			);
 	}

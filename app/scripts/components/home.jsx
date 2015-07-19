@@ -17,7 +17,7 @@ var Home = React.createClass({
         {
             key:"item1",
             InfoTitle:"找到新同学",
-            InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？这不是幻想，大家的联系方式这里都有！",
+            InfoMessage:"作为新生的你，还没开学就想找到未来的同班同学吗？<br />现在这已不是幻想，小伙伴们的联系方式这里都有！",
             color:"#fc615c",
             Link:"#/classmate",
             buttonTitle:"进入",
@@ -25,25 +25,24 @@ var Home = React.createClass({
         {
             key:"item2",
             InfoTitle:"同济订奶",
-            InfoMessage:"每天早上为您准备了新鲜的牛奶和早点，准时送到寝室门口！",
+            InfoMessage:"每天早上为您准备了新鲜的牛奶和早点<br /> 7点之前准时送到寝室门口！",
             color:"#fdbd40",
             Link:"milk.html",
             buttonTitle:"进入",
         },
         {
             key:"item3",
-            InfoTitle:"选课必知",
-            InfoMessage:"学长学姐已经被天天点名的老师折磨得不成人样,选不点名、100%拿优的课,来瞧瞧！",
+            InfoTitle:"心愿墙",
+            InfoMessage:"还在等每年只有一次的女生节么？<br />还在抱怨男生不可以写心愿卡么？<br />想找人一起刷屠苏馆？<br />想找人一起粗去约浪？<br />❤没错，全部满足你！",
             color:"#54c9ff",
-            Link:"#/xuanke",
-            disabled:true,
-            buttonTitle:"即将推出",
+            Link:"#/wall",
+            buttonTitle:"进入",
 
         },
         {
             key:"item4",
-            InfoTitle:"新生必备",
-            InfoMessage:"想知道来同济大学入学都应该带一些必备的物品吗?校园周边的小吃,各种信息,一网打尽！",
+            InfoTitle:"选课网",
+            InfoMessage:"学长学姐还在苦于选到了格外严厉的老师,格外吃力不讨好的课程<br />避免重蹈覆辙走他们的老路? <br />选课网,一键帮你提供选课咨询！",
             color:"#34c849",
             Link:"#/home",
             disabled:true,
@@ -69,7 +68,7 @@ var Home = React.createClass({
                     </Row>
                   </div>
                 </section>
-                <Footer />
+                <Footer name={"周左左"} />
             </div>
 
 

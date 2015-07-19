@@ -82,7 +82,7 @@ var Classmate = React.createClass({
 			  		<Table finished={this.state.FindclassStore.findFinished} data={this.state.FindclassStore.classmateInfo} />
 			  	</div>
 			  </section>
-			  <Footer />
+			  <Footer name={"周左左"} />
              </div>
 			);
 	}

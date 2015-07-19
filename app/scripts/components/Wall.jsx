@@ -146,7 +146,7 @@ var Wall = React.createClass({
 		return(
 			<div >
               <Navbar />
-              <Header color="red" headerTitle="心愿墙" headerParagraph={<p>还没开学就想先认识同学？ <br/> 只需一步</p>} subHeader={true}  />
+              <Header color="pink" headerTitle="心愿墙" headerParagraph={<p>我的心愿是劈柴喂马 <br/> 谁帮我实现?</p>} subHeader={true}  />
               <section className="container" style={{"paddingTop":10}}>
               	<div style={{"marginBottom":20}} >
 		              	<Button style={{"marginRight":10,"display":this.state.backButton}} onClick={this.back} >返回</Button>             		
@@ -167,7 +167,7 @@ var Wall = React.createClass({
               	</div>
               	<NextButton  disabled={this.state.WallStore.objWish.loading} nextPage={this.nextPage} missed={this.state.missed} />
 			  </section>
-			  <Footer />
+			  <Footer name={"微同济"} />
              </div>
 			);
 	}

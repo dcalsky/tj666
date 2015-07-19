@@ -198,7 +198,7 @@ var Xuanke = React.createClass({
 					</Form>
 				  </div>
 			  </section>
-			  <Footer />
+			  <Footer name={"周左左"} />
              </div>
 			);
 	}
