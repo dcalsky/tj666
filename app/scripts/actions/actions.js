@@ -12,9 +12,10 @@ var Actions = Reflux.createActions([
   'addWish',
   'refreshWish',
   'loadWish',
+  'getSingleWish',
   'viewMyWish',
   'likeWish',
-  'unlikeWish'
+  'unlikeWish',
 ]);
 
 module.exports = Actions;

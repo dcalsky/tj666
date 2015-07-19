@@ -9,9 +9,10 @@ var XuankeStore = Reflux.createStore({
     listenables: [Actions],
     objWish:{
     	wishs: [],
-    	page: 1,
+    	page: 0,
       loading: false,
       addCompleted: false,
+      single: {},
     },
     getInitialState:function(){
         return {
@@ -35,7 +36,7 @@ var XuankeStore = Reflux.createStore({
              if(resp.status){
               self.objWish.wishs = [];
              	self.objWish.wishs = resp.wishs;
-              self.objWish.page = 0 ;
+              self.objWish.page = 1 ;
               self.objWish.loading = false ;
               self.objWish.wishs.map(function(item){
               if(_.where(resp.liked,{wish_id:item.id}).length){
@@ -59,7 +60,6 @@ var XuankeStore = Reflux.createStore({
     },
     likeWish: function(id,accout){
       var self = this;
-      console.log(id +" " +accout);
       reqwest({
           url: URL_CROSS
         , type: 'json'
@@ -164,7 +164,6 @@ var XuankeStore = Reflux.createStore({
             }
           , success: function (resp) {
                if(resp.status){
-
                	self.objWish.addCompleted = true ;
               	self.trigger({'objWish': self.objWish});
                }
@@ -199,6 +198,36 @@ var XuankeStore = Reflux.createStore({
             alert("请确保网络连接正常！");
           }
         });
+    },
+    getSingleWish: function(id){
+      var self = this;
+      reqwest({
+          url: URL_CROSS
+        , type: 'json'
+        , method: 'get'
+        , data:{action: 'getSingleWish',id: id}
+        , success: function (resp) {
+             if(resp.status){
+                console.log(resp.wish);
+                for(attr in resp.wish){
+                    if(!isNaN(attr)) continue;
+                    objWish.single[attr] = resp.wish[attr];
+                }
+                self.objWish.single['liked'] = _.where(slef.objWish.wishs,{wish_id: id})[0]['liked'];
+                console.log(_.where(slef.objWish.wishs,{wish_id: id})[0]);
+                self.trigger({'objWish': self.objWish});
+                }else{
+                  if(!resp.wishs.length){
+                    self.trigger({'objWish': self.objWish});
+                  }
+                }
+          }
+        , error: function(err){
+          self.objWish.loading = false ;
+          alert("请确保网络连接正常！");
+          self.trigger({'objWish': self.objWish});
+        }
+      });
     },
 });
 

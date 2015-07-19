@@ -24,10 +24,10 @@ var Card = React.createClass({
 	completed: true,
 	handleClick: function(){
 		if(this.liked && this.completed){
-			completed: false;
+			this.completed = false;
 			Actions.unlikeWish(this.props.item.id,this.props.accout);
 		}else if(!this.liked && this.completed){
-			completed: false;
+			this.completed = false;
 			Actions.likeWish(this.props.item.id,this.props.accout);
 		}
 	},
@@ -36,11 +36,13 @@ var Card = React.createClass({
 			this.heart = 'heart' ;
 			this.liked = true ;
 			this.completed = true ;
+			console.log("Like ok");
 			this.love = nextProps.item.love ;
 		}else if(nextProps.item.unlikeCompleted){
 			this.heart = 'heart-empty' ;
 			this.liked = false ;
 			this.completed = true ;
+			console.log("unlike ok");
 			this.love = nextProps.item.love ;
 		}
 	},
@@ -48,13 +50,13 @@ var Card = React.createClass({
 	    this.love = this.props.item.love ;
 	    this.liked = this.props.item.liked ;
 	    this.heart = this.props.item.liked ? 'heart' : 'heart-empty' ;
-		var content = this.props.item.content.replace(new RegExp("\n", "gm"), "<br />");
+		var content = this.props.item.content.replace(new RegExp('\n', "gm"), "<br />");
 		var content = this.props.item.content.replace(new RegExp("<script>", "gm"), " ");
 		title = <div>{this.props.item.title}<Badge style={{"margin":"0px 0px 6px 5px"}} >Like:{this.love}</Badge><span className="pull-right" onClick={this.handleClick}><Glyphicon style={{"cursor":"pointer"}} glyph={this.heart} /></span></div> ;
 		return(
 			<div>
 				<Panel style={{"height":300,"overflowY":"scroll","wordBreak":"break-all"}} header={title} bsStyle='primary'>
-					<div dangerouslySetInnerHTML={{__html: content}} />
+					<pre><div dangerouslySetInnerHTML={{__html: content}} /></pre>
 					<p className="text-right" style={{marginTop:40}} ><i>{this.props.item.name}</i> <br />于 <br /><i>{this.props.item.time}</i></p>
 				</Panel>
 			</div>

@@ -78,7 +78,7 @@ var AddWish = React.createClass({
 			<div >
               <Navbar />
               <section className="container" style={{"marginTop":30}}>
-              	<PageHeader> <p className="text-center" >添加心愿<small>Let it come true</small></p></PageHeader>
+              	<PageHeader> <p className="text-center" >添加心愿单<small>Let it come true</small></p></PageHeader>
               	<form onSubmit={this.handleForm} >
               	<Col xs={12}>
 	              	<Input type='text' ref="title" label='心愿标题:' placeholder='请填写心愿的标题' addonBefore='*' valueLink={this.linkState('title')} onBlur={this.handleValidation('title')} />
