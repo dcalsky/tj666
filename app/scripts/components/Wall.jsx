@@ -36,13 +36,11 @@ var Card = React.createClass({
 			this.heart = 'heart' ;
 			this.liked = true ;
 			this.completed = true ;
-			console.log("Like ok");
 			this.love = nextProps.item.love ;
 		}else if(nextProps.item.unlikeCompleted){
 			this.heart = 'heart-empty' ;
 			this.liked = false ;
 			this.completed = true ;
-			console.log("unlike ok");
 			this.love = nextProps.item.love ;
 		}
 	},
@@ -169,7 +167,7 @@ var Wall = React.createClass({
               	</div>
               	<NextButton  disabled={this.state.WallStore.objWish.loading} nextPage={this.nextPage} missed={this.state.missed} />
 			  </section>
-			  <Footer name={"微同济"} />
+			  <Footer name={"济忆"} />
              </div>
 			);
 	}

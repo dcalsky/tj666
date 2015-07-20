@@ -35,7 +35,7 @@ var DrawWish = React.createClass({
               	<PageHeader> <p className="text-center" >添加心愿单<small>Let it come true</small></p></PageHeader>
               	{this.getParams().id}
 			  </section>
-			  <Footer name={"微同济"} />
+			  <Footer name={"济忆"} />
              </div>
 			);
 	}

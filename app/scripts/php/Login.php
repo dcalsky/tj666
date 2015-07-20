@@ -143,6 +143,19 @@ if (!$con)
 			print(json_encode(array('status' => $status,'wishs' => $result,'liked' => $likedUser)));
 		}
   	}
+  	if($_REQUEST['action'] == 'getSingleWish'){
+  		$id = $_REQUEST['id'];
+		$sql="select * from Wall where id='$id'";
+		if( $return = mysql_query($sql) ) {
+			$result = mysql_result($return,0);
+			if(!$result){
+				$status = false;
+			}else{
+				$status = true;
+			}
+			print(json_encode(array('status' => $status,'wish' => $result)));
+		}
+  	}
   	if($_REQUEST['action'] == 'like'){
   		$id = $_REQUEST['id'];
   		$accout = $_REQUEST['accout'];
