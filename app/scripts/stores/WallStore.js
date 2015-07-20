@@ -1,11 +1,12 @@
 var Reflux = require('reflux');
 var Actions = require('../actions/actions.js');
 var reqwest = require('reqwest');
+var Storage = require('react-storage');
 var URL_CROSS = 'http://www.ttjj666.com/php/Login.php';
 var URL = '../php/Login.php';
 var _ = require('underscore');
 
-var XuankeStore = Reflux.createStore({
+var WallStore = Reflux.createStore({
     listenables: [Actions],
     objWish:{
     	wishs: [],
@@ -13,6 +14,12 @@ var XuankeStore = Reflux.createStore({
       loading: false,
       addCompleted: false,
       single: {},
+      lastTime: null,
+    },
+    clear:function(){
+      this.objWish.loading = true ;
+      this.objWish.addCompleted = false ;
+      this.objWish.wishs = [];
     },
     getInitialState:function(){
         return {
@@ -24,8 +31,7 @@ var XuankeStore = Reflux.createStore({
     }, 
     refreshWish: function(accout){
 	    var self = this;
-      this.objWish.loading = true ;
-      this.objWish.addCompleted = false ;
+      this.clear()
       self.trigger({'objWish': self.objWish});
       reqwest({
           url: URL_CROSS
@@ -39,13 +45,16 @@ var XuankeStore = Reflux.createStore({
               self.objWish.page = 1 ;
               self.objWish.loading = false ;
               self.objWish.wishs.map(function(item){
-              if(_.where(resp.liked,{wish_id:item.id}).length){
-                  item.liked = true ;
-                }
+                if(_.where(resp.liked,{wish_id:item.id}).length){
+                    item['liked'] = true ;
+                  }
+                if(_where(resp.drawed,{wish_id:item.id}).length){
+                    item['drawCompleted'] = true ;
+                  }
               });
             	self.trigger({'objWish': self.objWish});
          		  }else{
-                if(!resp.wishs.length){
+                if(resp.wishs.length < 1){
                   self.objWish.loading = true ;
                   self.trigger({'objWish': self.objWish});
                 }
@@ -78,6 +87,32 @@ var XuankeStore = Reflux.createStore({
             }
           }
         , error: function(err){
+          alert("请确保网络连接正常！");
+          self.trigger({'objWish': self.objWish});
+        }
+      });
+    },
+    drawWish: function(id,accout){
+      var self = this;
+      reqwest({
+          url: URL_CROSS
+        , type: 'json'
+        , method: 'post'
+        , data:{action: 'drawWish',id: id,accout: accout}
+        , success: function (resp) {
+             if(resp.status){
+              var _wish = _.where(self.objWish.wishs,{id:id})[0] ;
+              _wish['drawCompleted'] = true ;
+              self.trigger({'objWish': self.objWish});
+            }else{
+              var _wish = _.where(self.objWish.wishs,{id:id})[0] ;
+              _wish['drawCompleted'] = false ;
+              self.trigger({'objWish': self.objWish});
+            }
+          }
+        , error: function(err){
+          var _wish = _.where(self.objWish.wishs,{id:id})[0] ;
+          _wish['drawCompleted'] = false ;
           alert("请确保网络连接正常！");
           self.trigger({'objWish': self.objWish});
         }
@@ -124,13 +159,16 @@ var XuankeStore = Reflux.createStore({
                 self.objWish.page = self.objWish.page + 1 ;
                 self.objWish.loading = false ;
                 self.objWish.wishs.map(function(item){
-                if(_.where(resp.liked,{wish_id:item.id}).length){
-                    item.liked = true ;
+                  if(_.where(resp.liked,{wish_id:item.id}).length){
+                      item['liked'] = true ;
+                    }
+                  if(_where(resp.drawed,{wish_id:item.id}).length){
+                      item['drawCompleted'] = true ;
                   }
                 });
                 self.trigger({'objWish': self.objWish});
                 }else{
-                  if(!resp.wishs.length){
+                  if(resp.wishs.length < 1){
                     self.objWish.loading = true ;
                     self.trigger({'objWish': self.objWish});
                   }
@@ -147,6 +185,7 @@ var XuankeStore = Reflux.createStore({
     addWish: function(wish){
 	    var self = this;
       var D = new Date();
+      var thisTime = D.getTime();
 	    this.objWish.addCompleted = false ;
         reqwest({
             url: URL_CROSS
@@ -161,6 +200,7 @@ var XuankeStore = Reflux.createStore({
               accout: wish.accout,
               name: wish.name,
               time: D.toLocaleString(),
+              thisTime: thisTime,
             }
           , success: function (resp) {
                if(resp.status){
@@ -175,8 +215,32 @@ var XuankeStore = Reflux.createStore({
           }
         });
     },
+    checkLastTime: function(accout){
+      var self = this ;
+        reqwest({
+            url: URL_CROSS
+          , type: 'json'
+          , method: 'get'
+          , data:{
+              action: 'checkLastTime',
+              accout: accout,
+            }
+          , success: function (resp) {
+               if(resp.status){
+                self.objWish.lastTime = resp.lastTime ;
+                self.trigger({'objWish': self.objWish});
+               }
+            }
+          , error: function(err){
+            self.objWish.lastTime = NaN ;
+            self.trigger({'objWish': self.objWish});
+          }
+        });
+    },
     viewMyWish: function(accout){
-      var self = this;
+      var self = this ;
+        this.clear()
+        self.trigger({'objWish': self.objWish});
         reqwest({
             url: URL_CROSS
           , type: 'json'
@@ -184,12 +248,36 @@ var XuankeStore = Reflux.createStore({
           , data:{action: 'viewMyWish',accout: accout}
           , success: function (resp) {
                if(resp.status){
-                self.objWish.wishs = [];
                 self.objWish.wishs = resp.wishs ;
+                self.objWish.addCompleted = true ;
+                self.objWish.loading = false ;
                 self.objWish.wishs.map(function(item){
-                if(_.where(resp.liked,{wish_id:item.id}).length){
-                    item['liked'] = true ;
-                  }
+                  item['mine'] = true ;
+                });
+                self.trigger({'objWish': self.objWish});
+               }
+            }
+          , error: function(err){
+            alert("请确保网络连接正常！");
+          }
+        });
+    },
+    viewDrawWish: function(accout){
+      var self = this ;
+        this.clear()
+        self.trigger({'objWish': self.objWish});
+        reqwest({
+            url: URL_CROSS
+          , type: 'json'
+          , method: 'get'
+          , data:{action: 'viewDrawWish',accout: accout}
+          , success: function (resp) {
+               if(resp.status){
+                self.objWish.wishs = resp.wishs ;
+                self.objWish.addCompleted = true ;
+                self.objWish.loading = false ;
+                self.objWish.wishs.map(function(item){
+                  item['mine'] = true ;
                 });
                 self.trigger({'objWish': self.objWish});
                }
@@ -208,13 +296,11 @@ var XuankeStore = Reflux.createStore({
         , data:{action: 'getSingleWish',id: id}
         , success: function (resp) {
              if(resp.status){
-                console.log(resp.wish);
                 for(attr in resp.wish){
                     if(!isNaN(attr)) continue;
                     objWish.single[attr] = resp.wish[attr];
                 }
                 self.objWish.single['liked'] = _.where(slef.objWish.wishs,{wish_id: id})[0]['liked'];
-                console.log(_.where(slef.objWish.wishs,{wish_id: id})[0]);
                 self.trigger({'objWish': self.objWish});
                 }else{
                   if(!resp.wishs.length){
@@ -231,4 +317,4 @@ var XuankeStore = Reflux.createStore({
     },
 });
 
-module.exports = XuankeStore ;
+module.exports = WallStore ;

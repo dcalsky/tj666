@@ -45,6 +45,7 @@
     "gulp-useref": "~1.1.2",
     "gulp-util": "~3.0.4",
     "gulp-webserver": "~0.9.0",
+    "halogen": "^0.1.10",
     "joi": "^6.5.0",
     "preprocessify": "~0.0.3",
     "react-autocomplete": "0.0.2",

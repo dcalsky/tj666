@@ -7,7 +7,7 @@ var UserStore = require('../stores/UserStore.js');
 var Actions = require('../actions/actions.js');
 
 var Bs = require('react-bootstrap');
-var PageHeader = Bs.PageHeader , Input = Bs.Input , Col = Bs.Col , Row = Bs.Row , Button = Bs.Button ;
+var Well = Bs.Well , PageHeader = Bs.PageHeader , Input = Bs.Input , Col = Bs.Col , Row = Bs.Row , Button = Bs.Button ;
 var Select = require('react-select');
 
 var Router = require('react-router');
@@ -25,7 +25,7 @@ var AddWish = React.createClass({
         content: Joi.string().required().min(10).max(200).label('内容'),
         gender: Joi.string().required().label('性别'),
         contact: Joi.string().required().min(3).max(16).label('联系方式'),
-        name: Joi.string().required().min(3).max(20).label('昵称'),
+        name: Joi.string().required().min(2).max(20).label('昵称'),
 	},
 	getInitialState: function () {
 	    return {
@@ -69,7 +69,6 @@ var AddWish = React.createClass({
 	    );
 	},
 	render: function(){
-		console.log(	this.state.WallStore.objWish.addCompleted);
 		if(this.state.WallStore.objWish.addCompleted){
 			alert("许愿成功,返回许愿墙...");
 			this.transitionTo('wall');
@@ -93,7 +92,7 @@ var AddWish = React.createClass({
       	            {this.getValidationMessages('name').map(this.renderHelpText)}
               	</Col>
               	<Col xs={6}>
-              		<Input type='text' ref="contact" label='联系方式:' placeholder='QQ,微信,手机号' addonBefore='*' valueLink={this.linkState('contact')} onBlur={this.handleValidation('contact')} />
+              		<Input type='text' ref="contact" label='联系方式(3选1):' placeholder='QQ|微信|手机号' addonBefore='*' valueLink={this.linkState('contact')} onBlur={this.handleValidation('contact')} />
       	            {this.getValidationMessages('contact').map(this.renderHelpText)}
 
               	</Col>
@@ -109,6 +108,7 @@ var AddWish = React.createClass({
 					/>
       	            {this.getValidationMessages('gender').map(this.renderHelpText)}
               	</Col>
+              	<Well className="text-center" bsSize='large'><p style={{marginTop:20}} >您的联系方式只会被认领者看见 & 一天只能认领或发布心愿一次 .</p></Well>
               	<Col xs={6} style={{"marginTop":20}}>
 	              	<Button onClick={this.back} block>返回</Button>
               	</Col>

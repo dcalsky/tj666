@@ -10,6 +10,7 @@ var _ = require('underscore');
 
 var Bs = require('react-bootstrap');
 var Badge = Bs.Badge , Glyphicon = Bs.Glyphicon , Panel = Bs.Panel , Input = Bs.Input , Col = Bs.Col , Row = Bs.Row , Button = Bs.Button ;
+var Halogen = require('halogen');
 
 var Router = require('react-router');
 
@@ -17,12 +18,37 @@ var Navbar = require('./Navbar.jsx');
 var Footer = require('./Footer.jsx');
 var Header = require('./Header.jsx');
 
+var CardLike = React.createClass({
+	render: function(){
+		if(this.props.mine == 1){
+			return <Badge >MINE</Badge> ;
+		}else{
+			return (
+				<Button bsStyle='danger' bsSize="small" className="pull-right" onClick={this.props.handleHeart}>
+					<Glyphicon style={{"cursor":"pointer"}} glyph={this.props.heart} />
+				</Button>
+			);
+		}
+	}
+});
+var Draw = React.createClass({
+	render: function(){
+		if(this.props.mine == 1){
+			return null ;
+		}else{
+			return <Button bsSize='small' disabled={this.props.disabled} onClick={this.props.drawWish} >认领 </Button> ;
+		}
+	}
+
+});
 var Card = React.createClass({
+	mixins: [Reflux.connect(WallStore, 'WallStore'),Reflux.connect(UserStore, 'UserStore')],
 	heart: 'heart-empty',
 	liked: false,
 	love: 0,
 	completed: true,
-	handleClick: function(){
+	drawCompleted: false,
+	handleHeart: function(){
 		if(this.liked && this.completed){
 			this.completed = false;
 			Actions.unlikeWish(this.props.item.id,this.props.accout);
@@ -31,7 +57,18 @@ var Card = React.createClass({
 			Actions.likeWish(this.props.item.id,this.props.accout);
 		}
 	},
+	drawWish: function(){
+
+		var D = new Date();
+		//if(this.state.WallStore.objWish.lastTime && (D.getTime() - this.state.WallStore.objWish.lastTime >= 86400000 && this.drawCompleted == false)){
+			Actions.drawWish(this.props.item.id,this.state.UserStore.user.accout);
+			this.drawCompleted = true ;
+		//}else{
+		//	alert('Sorry!距离您上次认领或者发布心愿未到一天哦～');
+		//}
+	},
 	componentWillReceiveProps: function (nextProps) {
+		this.drawCompleted = nextProps.item.drawCompleted ;
 		if(nextProps.item.likeCompleted){
 			this.heart = 'heart' ;
 			this.liked = true ;
@@ -50,12 +87,12 @@ var Card = React.createClass({
 	    this.heart = this.props.item.liked ? 'heart' : 'heart-empty' ;
 		var content = this.props.item.content.replace(new RegExp('\n', "gm"), "<br />");
 		var content = this.props.item.content.replace(new RegExp("<script>", "gm"), " ");
-		title = <div>{this.props.item.title}<Badge style={{"margin":"0px 0px 6px 5px"}} >Like:{this.love}</Badge><span className="pull-right" onClick={this.handleClick}><Glyphicon style={{"cursor":"pointer"}} glyph={this.heart} /></span></div> ;
+		title = <div>{this.props.item.title}<Badge style={{"margin":"0px 0px 6px 5px"}} >Like:{this.love}</Badge><CardLike mine={this.props.item.mine} handleHeart={this.handleHeart} heart={this.heart} /></div> ;
 		return(
 			<div>
 				<Panel style={{"height":300,"overflowY":"scroll","wordBreak":"break-all"}} header={title} bsStyle='primary'>
 					<pre><div dangerouslySetInnerHTML={{__html: content}} /></pre>
-					<p className="text-right" style={{marginTop:40}} ><i>{this.props.item.name}</i> <br />于 <br /><i>{this.props.item.time}</i></p>
+					<p className="text-right" style={{marginTop:40}} ><i>{this.props.item.name}</i> <br />于 <br /><i>{this.props.item.time}</i><br /><Draw mine={this.props.item.mine} drawWish={this.drawWish} disabled={this.drawCompleted}/></p>
 				</Panel>
 			</div>
 		);
@@ -65,7 +102,7 @@ var Card = React.createClass({
 var Loading = React.createClass({
 	render: function(){
 		if(this.props.loading){
-			return (<img src="./images/loading.gif" />);
+			return (<div className="loading" ><Halogen.BounceLoader color={"#4DAF7C"} size="48px" /></div>);
 		}else{
 			return null ;
 		}
@@ -118,6 +155,7 @@ var Wall = React.createClass({
 			return;
 		}
 		Actions.refreshWish(this.state.UserStore.user.accout);
+		Actions.checkLastTime(this.state.UserStore.user.accout);
 	}, 
 	viewMyWish: function(){
 		this.setState({
@@ -127,16 +165,31 @@ var Wall = React.createClass({
 		});
 		Actions.viewMyWish(this.state.UserStore.user.accout);
 	},
+	viewDrawWish: function(){
+		this.setState({
+			missed: true,
+			viewDrawButton: 'none',
+			backButton: 'inline',
+		});
+		Actions.viewDrawWish(this.state.UserStore.user.accout);
+	},
 	back: function(){
 		this.setState({
 			missed: false,
 			viewWishButton: 'inline',
+			viewDrawButton: 'inline',
 			backButton: 'none',
 		});
 		Actions.refreshWish(this.state.UserStore.user.accout);
+		Actions.checkLastTime(this.state.UserStore.user.accout);
 	},
 	addWish: function(){
-		this.transitionTo('addWish');
+		var D = new Date();
+		if(this.state.WallStore.objWish.lastTime && (D.getTime() - this.state.WallStore.objWish.lastTime >= 86400000)){
+			this.transitionTo('addWish');
+		}else{
+			alert('Sorry!距离您上次认领或者发布心愿未到一天哦～');
+		}
 	},
 	nextPage: function(){
 		Actions.loadWish(this.state.UserStore.user.accout);
@@ -151,7 +204,9 @@ var Wall = React.createClass({
               	<div style={{"marginBottom":20}} >
 		              	<Button style={{"marginRight":10,"display":this.state.backButton}} onClick={this.back} >返回</Button>             		
 		              	<Button style={{"marginRight":10,"display":this.state.viewWishButton}} bsStyle='success' onClick={this.viewMyWish} >我的心愿</Button>
+						<Button style={{"marginRight":10,"display":this.state.viewDrawButton}} bsStyle='success' onClick={this.viewDrawWish} >我的认领</Button>
 		              	<Button style={{"marginRight":10}} bsStyle='danger' onClick={this.addWish} >添加心愿</Button>
+
               	</div>
               	<div className="wall row">
               		{this.state.WallStore.objWish.wishs.map(function(item){
@@ -162,7 +217,7 @@ var Wall = React.createClass({
               			);
               		})}
               	</div>
-              	<div className="text-center">
+              	<div className="text-center" style={{"marginLeft":200}}>
 				  <Loading loading={this.state.WallStore.objWish.loading} /> 
               	</div>
               	<NextButton  disabled={this.state.WallStore.objWish.loading} nextPage={this.nextPage} missed={this.state.missed} />

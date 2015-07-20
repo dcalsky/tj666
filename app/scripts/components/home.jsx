@@ -33,7 +33,7 @@ var Home = React.createClass({
         {
             key:"item3",
             InfoTitle:"心愿墙",
-            InfoMessage:"还在等每年只有一次的女生节么？<br />还在抱怨男生不可以写心愿卡么？<br />想找人一起刷屠苏馆？<br />想找人一起粗去约浪？<br />❤没错，全部满足你！",
+            InfoMessage:"还在等每年只有一次的女生节么？<br />还在抱怨男生不可以写心愿卡么？<br />想找人一起刷屠苏馆？<br />想找人一起粗去约浪？<br />没错，全部满足你！",
             color:"#54c9ff",
             Link:"#/wall",
             buttonTitle:"进入",

@@ -609,3 +609,23 @@ h2 {
       background-color:#fafafa;
 
 }
+.loading{
+    display: '-webkit-flex';
+    display: 'flex';
+    webkitFlex: '0 1 auto';
+    flex: '0 1 auto';
+    webkitFlexDirection: 'column';
+    flexDirection: 'column';
+    webkitFlexGrow: 1;
+    flexGrow: 1;
+    webkitFlexShrink: 0;
+    flexShrink: 0;
+    webkitFlexBasis: '25%';
+    flexBasis: '25%';
+    maxWidth: '25%';
+    height: '200px';
+    webkitAlignItems: 'center';
+    alignItems: 'center';
+    webkitJustifyContent: 'center';
+    justifyContent: 'center';
+}
