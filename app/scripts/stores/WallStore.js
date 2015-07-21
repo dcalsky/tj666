@@ -89,16 +89,11 @@ var WallStore = Reflux.createStore({
       var self = this;
       var D = new Date();
       var thisTime = D.getTime();
-
       reqwest({
           url: URL_CROSS
         , type: 'json'
         , method: 'post'
-        , data:{action: 'drawWish',
-                id: id,
-                accout: accout,
-                time: thisTime,
-              }
+        , data:{action: 'drawWish',id: id,accout: accout, thisTime:thisTime}
         , success: function (resp) {
              if(resp.status){
               var _wish = _.where(self.objWish.wishs,{id:id})[0] ;

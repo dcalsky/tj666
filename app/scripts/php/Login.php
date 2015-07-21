@@ -156,6 +156,7 @@ if (!$con)
   	if($_REQUEST['action'] == 'drawWish'){
   		$id = $_REQUEST['id'];
   		$accout = $_REQUEST['accout'];
+  		$thisTime = $_REQUEST['thisTime'];
 		if(mysql_result(mysql_query("select drawed from Wall where id = $id"),0) == '0'){
 			$sql="update Wall set drawed = '$accout' where id = $id ";
 			if(  mysql_query($sql)){
@@ -163,9 +164,10 @@ if (!$con)
 				}else{
 					$status = false;
 				}
-			$sql=" update User_Base set lastTime = '$thisTime' where accout = '$accout' ";
-			if( !mysql_query($sql)){
-				$status = false;
+			$sql="update User_Base set lastTime = '$thisTime' where accout = '$accout'";
+			if( mysql_query($sql)){
+			}else{
+					$status = false;
 			}	
 			print(json_encode(array('status' => $status)));
 		}else{

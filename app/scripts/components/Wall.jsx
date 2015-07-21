@@ -36,7 +36,7 @@ var Draw = React.createClass({
 		if(this.props.mine == 1){
 			return null ;
 		}else{
-			return <Button bsSize='small' disabled={this.props.disabled} onClick={this.props.drawWish} >认领 </Button> ;
+			return <Button bsSize='small' disabled={this.props.disabled} onClick={this.props.drawWish} >{this.props.label} </Button> ;
 		}
 	}
 
@@ -46,14 +46,15 @@ var Card = React.createClass({
 	heart: 'heart-empty',
 	liked: false,
 	love: 0,
-	label: '认领',
 	completed: true,
 	accout: null,
 	contact: null,
 	myDrawed: null,
+	drawCompleted: false,
 	getInitialState: function () {
 	    return {
 	        drawed: false,
+	        label: '认领',
 	    };
 	},
 	handleHeart: function(){
@@ -68,22 +69,27 @@ var Card = React.createClass({
 	drawWish: function(){
 
 		var D = new Date();
-		if(this.state.WallStore.objWish.lastTime && (D.getTime() - this.state.WallStore.objWish.lastTime >= 86400000 && this.drawCompleted == false)){
+		if(this.state.WallStore.objWish.lastTime && (D.getTime() - this.state.WallStore.objWish.lastTime >= 86400000) && this.drawCompleted == false){
 			Actions.drawWish(this.props.item.id,this.state.UserStore.user.accout);
-			this.setState({drawed: true}) ;
+			this.setState({
+				drawed: true,
+				label: '已被认领',
+			});
 		}else{
 			alert('Sorry!距离您上次认领或者发布心愿未到一天哦～');
 		}
 	},
 	componentWillMount: function () {
 	   	if(this.props.item.drawed != 'none'){
-	   		this.label = '已被认领';
-	   		this.setState({drawed: true}) ;
+			this.setState({
+				drawed: true,
+				label: '已被认领',
+			}) ;
 	   	}
 	   	if(this.props.item.contact != 'filter' && this.props.item.accout != 'filter'){
 	   		this.contact = <i><br />联系方式:{this.props.item.contact}<br /></i>;
 	   		this.accout = <i>学号:{this.props.item.accout}</i>;
-	   		this.myDrawed = <Badge ><b>我认领的</b></Badge>;
+	   		this.myDrawed = <Badge><b style={{color: "red"}} >我认领的</b></Badge>;
 
 	   	}  
 	},
@@ -99,8 +105,9 @@ var Card = React.createClass({
 			this.completed = true ;
 			this.love = nextProps.item.love ;
 		}
-		if(nextProps.item.drawCompleted){
+		if(nextProps.item.drawCompleted && this.drawCompleted == false){
 			alert('认领成功,请到"我的认领"查看联系方式.');
+			this.drawCompleted == true ;
 		}
 	},
 	render: function(){
@@ -111,7 +118,7 @@ var Card = React.createClass({
 		var content = this.props.item.content.replace(new RegExp("<script>", "gm"), " ");
 		if(this.props.item.mine == 1){
 			var drawed = this.props.item.drawed != '0' ? <i>被:{this.props.item.drawed}认领</i> : <i>暂时无人认领</i> ;
-			var title = <div>{this.props.item.title}<Badge style={{"margin":"0px 0px 6px 5px"}} >Like:{this.love}</Badge><Badge >MINE</Badge></div> ;
+			var title = <div>{this.props.item.title}<Badge style={{"margin":"0px 0px 6px 5px"}} >Like:{this.love}</Badge><Badge ><b style={{color: "red"}}>MINE</b></Badge></div> ;
 			return(
 				<div>
 					<Panel style={{"height":300,"overflowY":"scroll","wordBreak":"break-all"}} header={title} bsStyle='primary'>
@@ -139,7 +146,7 @@ var Card = React.createClass({
 							<br />
 							{this.accout}
 							{this.contact}
-							<Draw drawWish={this.drawWish} label={this.label} disabled={this.state.drawed}/>
+							<Draw drawWish={this.drawWish} label={this.state.label} disabled={this.state.drawed}/>
 						</p>
 					</Panel>
 				</div>
