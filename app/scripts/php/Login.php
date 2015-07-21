@@ -84,11 +84,47 @@ if (!$con)
 		}	
 			print(json_encode(array('status' => $status)));
   	}
-  	if($_REQUEST['action'] == 'refreshWish'){
-		$sql = "SELECT * FROM Wall ORDER BY id DESC LIMIT 6 ";
+  	if($_REQUEST['action'] == 'loadWish'){
+  		$accout = $_REQUEST['accout'];
+  		$page = $_REQUEST['page'];
+  		$num = $page * 6 ;
+  		if($num == 0){
+			$sql="SELECT CASE WHEN accout = '$accout' THEN 1 ELSE 0 END AS mine,(CASE WHEN drawed = '$accout' THEN accout ElSE 'filter' END) as accout,(CASE WHEN drawed = '$accout' THEN contact ElSE 'filter' END) as contact,love,name,time,id,content,title,gender FROM Wall ORDER BY id DESC LIMIT 6";
+  		}else{
+			$sql="SELECT CASE WHEN accout = '$accout' THEN 1 ELSE 0 END AS mine,(CASE WHEN drawed = '$accout' THEN accout ElSE 'filter' END) as accout,(CASE WHEN drawed = '$accout' THEN contact ElSE 'filter' END) as contact,love,name,time,id,content,title,gender FROM Wall WHERE id<=(SELECT max(id) FROM Wall)-$num ORDER BY id DESC LIMIT 6";
+  		}
 		if( $return = mysql_query($sql) ) {
 			$result = array();
 			while($row = mysql_fetch_array($return)){
+				$row['liked'] = mysql_result(mysql_query("SELECT CASE WHEN accout = '$accout' THEN 'true' ELSE 'false' END AS liked FROM Wish_Like where wish_id = $row[id] "),0);
+				$drawed = mysql_result(mysql_query("select drawed from Wall where id = $row[id] "),0);
+				if($drawed == $accout){
+					$row['drawed'] = 'mine';
+				}else if($drawed == '0'){
+					$row['drawed'] = 'none';
+				}else{
+					$row['drawed'] = 'drawed';
+				}
+				if($row['mine'] == 1){
+					$row['drawed'] = $drawed;
+				}
+				$result[] = $row ;
+			}
+			if(!$result){
+				$status = false;
+			}else{
+				$status = true;
+			}
+		}
+			print(json_encode(array('status' => $status,'wishs' => $result)));
+  	}
+  	if($_REQUEST['action'] == 'viewMyWish'){
+  		$accout = $_REQUEST['accout'];
+		$sql="select * from Wall where accout='$accout' ORDER BY id DESC ";
+		if( $return = mysql_query($sql) ) {
+			$result = array();
+			while($row = mysql_fetch_array($return)){
+				$row['mine'] = 1;
 				$result[] = $row ;
 			}
 			if(!$result){
@@ -99,60 +135,14 @@ if (!$con)
 			print(json_encode(array('status' => $status,'wishs' => $result)));
 		}
   	}
-  	if($_REQUEST['action'] == 'loadWish'){
-  		$accout = $_REQUEST['accout'];
-  		$page = $_REQUEST['page'];
-  		$num = $page * 6 ;
-  		if($num == 0){
-			$sql="SELECT CASE WHEN accout = '$accout' THEN 1 ELSE 0 END AS mine,love,name,time,id,content,title,gender FROM Wall ORDER BY id DESC LIMIT 6";
-  		}else{
-			$sql="SELECT CASE WHEN accout = '$accout' THEN 1 ELSE 0 END AS mine,love,name,time,id,content,title,gender FROM Wall WHERE id<(SELECT max(id) FROM Wall)-$num ORDER BY id DESC LIMIT 6";
-  		}
-		if( $return = mysql_query($sql) ) {
-			$result = array();
-			while($row = mysql_fetch_array($return)){
-				$result[] = $row ;
-			}
-			if(!$result){
-				$status = false;
-			}else{
-				$status = true;
-			}
-		}
-		$liked = mysql_query("select wish_id from Wish_Like where accout='$accout'");
-			$likedUser = array();
-			while($row = mysql_fetch_array($liked)){
-				$likedUser[] = $row ;
-			}
-			print(json_encode(array('status' => $status,'wishs' => $result,'liked' => $likedUser)));
-  	}
-  	if($_REQUEST['action'] == 'viewMyWish'){
-  		$accout = $_REQUEST['accout'];
-		$sql="select * from Wall where accout='$accout' ORDER BY id DESC ";
-		if( $return = mysql_query($sql) ) {
-			$result = array();
-			while($row = mysql_fetch_array($return)){
-				$result[] = $row ;
-			}
-			if(!$result){
-				$status = false;
-			}else{
-				$status = true;
-			}
-		$liked = mysql_query("select wish_id from Wish_Like where accout='$accout'");
-			$likedUser = array();
-			while($row = mysql_fetch_array($liked)){
-				$likedUser[] = $row ;
-			}
-			print(json_encode(array('status' => $status,'wishs' => $result,'liked' => $likedUser)));
-		}
-  	}
   	if($_REQUEST['action'] == 'viewDrawWish'){
   		$accout = $_REQUEST['accout'];
-		$sql="select * from Wish_Draw where accout='$accout' ORDER BY id DESC ";
+		$sql="select * from Wall where drawed='$accout' ORDER BY id DESC ";
 		if( $return = mysql_query($sql) ) {
 			$result = array();
 			while($row = mysql_fetch_array($return)){
+				$row['drawed'] = 'mine';
+				$row['liked'] = mysql_result(mysql_query("SELECT CASE WHEN accout = '$accout' THEN 'true' ELSE 'false' END AS liked FROM Wish_Like where wish_id = $row[id] "),0);
 				$result[] = $row ;
 			}
 			if(!$result){
@@ -160,24 +150,28 @@ if (!$con)
 			}else{
 				$status = true;
 			}
-		$liked = mysql_query("select wish_id from Wish_Like where accout='$accout'");
-			$likedUser = array();
-			while($row = mysql_fetch_array($liked)){
-				$likedUser[] = $row ;
-			}
-			print(json_encode(array('status' => $status,'wishs' => $result,'liked' => $likedUser)));
+			print(json_encode(array('status' => $status,'wishs' => $result)));
 		}
   	}
   	if($_REQUEST['action'] == 'drawWish'){
   		$id = $_REQUEST['id'];
   		$accout = $_REQUEST['accout'];
-		$sql="INSERT INTO Wish_Draw (wish_id,accout) VALUES ($id,'$accout')";
-		if(  mysql_query($sql)){
-				$status = true ;
-			}else{
+		if(mysql_result(mysql_query("select drawed from Wall where id = $id"),0) == '0'){
+			$sql="update Wall set drawed = '$accout' where id = $id ";
+			if(  mysql_query($sql)){
+					$status = true ;
+				}else{
+					$status = false;
+				}
+			$sql=" update User_Base set lastTime = '$thisTime' where accout = '$accout' ";
+			if( !mysql_query($sql)){
 				$status = false;
-			}
-		print(json_encode(array('status' => $status)));
+			}	
+			print(json_encode(array('status' => $status)));
+		}else{
+			print(json_encode(array('status' => false)));
+		}
+
 	}
   	if($_REQUEST['action'] == 'getSingleWish'){
   		$id = $_REQUEST['id'];

@@ -44,14 +44,7 @@ var WallStore = Reflux.createStore({
              	self.objWish.wishs = resp.wishs;
               self.objWish.page = 1 ;
               self.objWish.loading = false ;
-              self.objWish.wishs.map(function(item){
-                if(_.where(resp.liked,{wish_id:item.id}).length){
-                    item['liked'] = true ;
-                  }
-                if(_where(resp.drawed,{wish_id:item.id}).length){
-                    item['drawCompleted'] = true ;
-                  }
-              });
+              console.log(resp.wishs);
             	self.trigger({'objWish': self.objWish});
          		  }else{
                 if(resp.wishs.length < 1){
@@ -62,7 +55,7 @@ var WallStore = Reflux.createStore({
           }
         , error: function(err){
           self.objWish.loading = false ;
-          alert("请确保网络连接正常！");
+          alert("缃戠粶杩炴帴閿欒!");
           self.trigger({'objWish': self.objWish});
         }
       });
@@ -87,18 +80,25 @@ var WallStore = Reflux.createStore({
             }
           }
         , error: function(err){
-          alert("请确保网络连接正常！");
+          alert("缃戠粶杩炴帴閿欒!");
           self.trigger({'objWish': self.objWish});
         }
       });
     },
     drawWish: function(id,accout){
       var self = this;
+      var D = new Date();
+      var thisTime = D.getTime();
+
       reqwest({
           url: URL_CROSS
         , type: 'json'
         , method: 'post'
-        , data:{action: 'drawWish',id: id,accout: accout}
+        , data:{action: 'drawWish',
+                id: id,
+                accout: accout,
+                time: thisTime,
+              }
         , success: function (resp) {
              if(resp.status){
               var _wish = _.where(self.objWish.wishs,{id:id})[0] ;
@@ -113,7 +113,7 @@ var WallStore = Reflux.createStore({
         , error: function(err){
           var _wish = _.where(self.objWish.wishs,{id:id})[0] ;
           _wish['drawCompleted'] = false ;
-          alert("请确保网络连接正常！");
+          alert("缃戠粶杩炴帴閿欒!");
           self.trigger({'objWish': self.objWish});
         }
       });
@@ -138,7 +138,7 @@ var WallStore = Reflux.createStore({
             }
           }
         , error: function(err){
-          alert("请确保网络连接正常！");
+          alert("缃戠粶杩炴帴閿欒!");
           self.trigger({'objWish': self.objWish});
         }
       });
@@ -158,14 +158,6 @@ var WallStore = Reflux.createStore({
                 self.objWish.wishs = self.objWish.wishs.concat(resp.wishs);
                 self.objWish.page = self.objWish.page + 1 ;
                 self.objWish.loading = false ;
-                self.objWish.wishs.map(function(item){
-                  if(_.where(resp.liked,{wish_id:item.id}).length){
-                      item['liked'] = true ;
-                    }
-                  if(_where(resp.drawed,{wish_id:item.id}).length){
-                      item['drawCompleted'] = true ;
-                  }
-                });
                 self.trigger({'objWish': self.objWish});
                 }else{
                   if(resp.wishs.length < 1){
@@ -176,12 +168,11 @@ var WallStore = Reflux.createStore({
           }
         , error: function(err){
           self.objWish.loading = false ;
-          alert("请确保网络连接正常！");
+          alert("缃戠粶杩炴帴閿欒!");
           self.trigger({'objWish': self.objWish});
         }
       });
     },
-    //标题，内容，手机号(选)，微信(选)，contact(选)，时间(自动生成)，学号(自动生成)
     addWish: function(wish){
 	    var self = this;
       var D = new Date();
@@ -210,7 +201,7 @@ var WallStore = Reflux.createStore({
             }
           , error: function(err){
             self.objWish.addCompleted = true ;
-            alert("请确保网络连接正常！");
+            alert("缃戠粶杩炴帴閿欒!");
             self.trigger({'objWish': self.objWish});
           }
         });
@@ -251,14 +242,11 @@ var WallStore = Reflux.createStore({
                 self.objWish.wishs = resp.wishs ;
                 self.objWish.addCompleted = true ;
                 self.objWish.loading = false ;
-                self.objWish.wishs.map(function(item){
-                  item['mine'] = true ;
-                });
                 self.trigger({'objWish': self.objWish});
                }
             }
           , error: function(err){
-            alert("请确保网络连接正常！");
+            alert("缃戠粶杩炴帴閿欒!");
           }
         });
     },
@@ -276,45 +264,15 @@ var WallStore = Reflux.createStore({
                 self.objWish.wishs = resp.wishs ;
                 self.objWish.addCompleted = true ;
                 self.objWish.loading = false ;
-                self.objWish.wishs.map(function(item){
-                  item['mine'] = true ;
-                });
                 self.trigger({'objWish': self.objWish});
                }
             }
           , error: function(err){
-            alert("请确保网络连接正常！");
+            alert("缃戠粶杩炴帴閿欒!");
           }
         });
     },
-    getSingleWish: function(id){
-      var self = this;
-      reqwest({
-          url: URL_CROSS
-        , type: 'json'
-        , method: 'get'
-        , data:{action: 'getSingleWish',id: id}
-        , success: function (resp) {
-             if(resp.status){
-                for(attr in resp.wish){
-                    if(!isNaN(attr)) continue;
-                    objWish.single[attr] = resp.wish[attr];
-                }
-                self.objWish.single['liked'] = _.where(slef.objWish.wishs,{wish_id: id})[0]['liked'];
-                self.trigger({'objWish': self.objWish});
-                }else{
-                  if(!resp.wishs.length){
-                    self.trigger({'objWish': self.objWish});
-                  }
-                }
-          }
-        , error: function(err){
-          self.objWish.loading = false ;
-          alert("请确保网络连接正常！");
-          self.trigger({'objWish': self.objWish});
-        }
-      });
-    },
+
 });
 
 module.exports = WallStore ;
