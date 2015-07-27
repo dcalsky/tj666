@@ -5,26 +5,9 @@ var Lang = require('./lang')
 Lang.set(require('./lang/zh-cn'))
 
 module.exports = {
-  Checkbox: require('./components/checkbox.jsx'),
-  CheckboxGroup: require('./components/checkbox-group.jsx'),
-  ColorPicker: require('./components/color-picker.jsx'),
-  Datetime: require('./components/datetime.jsx'),
   Form: require('./components/form.jsx'),
-  Icon: require('./components/icon.jsx'),
   Input: require('./components/input.jsx'),
-  Loading: require('./components/loading.jsx'),
-  Message: require('./components/message.jsx'),
-  MultSelect: require('./components/mult-select.jsx'),
-  Pagination: require('./components/pagination.jsx'),
-  Progress: require('./components/progress.jsx'),
-  RadioGroup: require('./components/radio-group.jsx'),
   Rating: require('./components/rating.jsx'),
-  Select: require('./components/select.jsx'),
-  Table: require('./components/table.jsx'),
-  TextArea: require('./components/textarea.jsx'),
-  Tree: require('./components/tree.jsx'),
-  Combobox: require('./components/combobox.js'),
-  Option: require('./components/option.js'),
   Lang: Lang,
 
   Actions: {

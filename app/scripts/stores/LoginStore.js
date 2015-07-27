@@ -35,6 +35,7 @@ var LoginStore = Reflux.createStore({
       this.objLogin.status = '';
       this.trigger({'objLogin':this.objLogin});
       var self = this;
+      var attr ;
         reqwest({
             url: URL_CROSS
           , type: 'json'

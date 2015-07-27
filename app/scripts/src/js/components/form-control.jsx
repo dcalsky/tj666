@@ -1,18 +1,8 @@
 var React = require('react')
 var classnames = require('classnames')
 
-var Checkbox = require('./checkbox.jsx')
-var CheckboxGroup = require('./checkbox-group.jsx')
-var Datetime = require('./datetime.jsx')
-var RadioGroup = require('./radio-group.jsx')
 var Input = require('./input.jsx')
-var Select = require('./select.jsx')
-var MultSelect = require('./mult-select.jsx')
-var TextArea = require('./textarea.jsx')
-var Tree = require('./tree.jsx')
 var Rating = require('./rating.jsx')
-var Progress = require('./progress.jsx')
-var ColorPicker = require('./color-picker.jsx')
 
 var Objects = require('../utils/objects')
 var Classable = require('../mixins/classable')

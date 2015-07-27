@@ -34,6 +34,7 @@ var Classmate = React.createClass({
 	    };
 	},
 	componentWillMount:function(){
+		var attr;
 		if(!this.state.UserStore.user.hadLogin){
 			this.transitionTo('login');
 			return;

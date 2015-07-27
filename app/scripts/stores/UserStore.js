@@ -20,6 +20,7 @@ var UserStore = Reflux.createStore({
       hadLogin:false,
     },
     getInitialState:function(){
+      var attr;
       if(Storage.has("user") && Storage.get("user")){        
         var storage_user = JSON.parse(Storage.get("user"));
         if(storage_user != null ){
@@ -41,6 +42,7 @@ var UserStore = Reflux.createStore({
     	this.trigger({'user':this.user});
     },
     syncUserMessage:function(message){
+      var attr;
     	for (attr in message){
     		this.user[attr] = message[attr] ;
     	};
@@ -72,6 +74,7 @@ var UserStore = Reflux.createStore({
         });
     },
     quit:function(){
+      var attr;
     	for (attr in this.user){
     		this.user[attr] = '' ;
     	};

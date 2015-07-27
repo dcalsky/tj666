@@ -15,7 +15,6 @@ var Star = require('react-star-rating');
 var Combobox = require('../src/js').Combobox;
 var ComboboxOption = require('../src/js').Option;
 
-var states = require('../states');
 
 var Router = require('react-router');
 

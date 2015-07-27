@@ -116,6 +116,7 @@ var Card = React.createClass({
 	    this.heart = this.props.item.liked ? 'heart' : 'heart-empty' ;
 		var content = this.props.item.content.replace(new RegExp('\n', "gm"), "<br />");
 		var content = this.props.item.content.replace(new RegExp("<script>", "gm"), " ");
+		var gender = this.props.item.gender == 'male' ? <span style={{color: "#5394ff"}} >♂</span> : <span style={{color: "#ff25aa"}}>♀</span> ;
 		if(this.props.item.mine == 1){
 			var drawed = this.props.item.drawed != '0' ? <i>被:{this.props.item.drawed}认领</i> : <i>暂时无人认领</i> ;
 			var title = <div>{this.props.item.title}<Badge style={{"margin":"0px 0px 6px 5px"}} >Like:{this.love}</Badge><Badge ><b style={{color: "red"}}>MINE</b></Badge></div> ;
@@ -124,7 +125,7 @@ var Card = React.createClass({
 					<Panel style={{"height":300,"overflowY":"scroll","wordBreak":"break-all"}} header={title} bsStyle='primary'>
 						<pre><div dangerouslySetInnerHTML={{__html: content}} /></pre>
 						<p className="text-right" style={{marginTop:40}} >
-							<i>{this.props.item.name}</i> 
+							<i>{gender}{this.props.item.name}</i> 
 							<br />于 <br />
 							<i>{this.props.item.time}</i>
 							<br />
@@ -140,7 +141,7 @@ var Card = React.createClass({
 					<Panel style={{"height":300,"overflowY":"scroll","wordBreak":"break-all"}} header={title} bsStyle='primary'>
 						<pre><div dangerouslySetInnerHTML={{__html: content}} /></pre>
 						<p className="text-right" style={{marginTop:40}} >
-							<i>{this.props.item.name}</i> 
+							<i>{gender}{this.props.item.name}</i> 
 							<br />于 <br />
 							<i>{this.props.item.time}</i>
 							<br />

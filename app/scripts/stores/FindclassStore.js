@@ -77,6 +77,7 @@ var FindclassStore = Reflux.createStore({
     }, 
     findClassmate:function(department){
         var self = this ;
+        var attr;
         reqwest({
             url:URL_CROSS,
             type:'json',
