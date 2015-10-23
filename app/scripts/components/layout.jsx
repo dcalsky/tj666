@@ -6,9 +6,7 @@ var Layout = React.createClass({
 
   render: function() {
     return (
-      <div className="App">
         <RouteHandler />
-      </div>
     );
   }
 });
